@@ -18,15 +18,12 @@ open class InputView: UITextView {
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         self.delegate = self
-        //configure()
     }
     
     public convenience init(hasBorder: Bool) {
-        
         self.init()
         self.hasBorder = hasBorder
         configure()
-        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -48,7 +45,7 @@ open class InputView: UITextView {
         self.layer.borderColor = UIColor.lightGray.cgColor
         self.layer.borderWidth = 0.8
         self.layer.cornerRadius = 4.0
-        self.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
+        self.textContainerInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         self.layer.masksToBounds = true
     }
     
@@ -65,55 +62,4 @@ extension InputView: UITextViewDelegate {
     }
     
 }
-
-//extension InputArea: UITextViewDelegate {
-
-/// Resize the placeholder when the UITextView bounds change
-//    override open var bounds: CGRect {
-//        didSet {
-//            self.resizePlaceholder()
-//        }
-//    }
-
-/// The UITextView placeholder text
-//    public var placeholder: String? {
-//        get {
-//            var placeholderText: String?
-//
-//            if let placeholderLabel = self.viewWithTag(100) as? UILabel {
-//                placeholderText = placeholderLabel.text
-//            }
-//
-//            return placeholderText
-//        }
-//        set {
-//            if let placeholderLabel = self.viewWithTag(100) as! UILabel? {
-//                placeholderLabel.text = newValue
-//                placeholderLabel.sizeToFit()
-//            } else {
-//                self.addPlaceholder(newValue!)
-//            }
-//        }
-//    }
-
-/// When the UITextView did change, show or hide the label based on if the UITextView is empty or not
-///
-/// - Parameter textView: The UITextView that got updated
-//    public func textViewDidChange(_ textView: UITextView) {
-//        if let placeholderLabel = self.viewWithTag(100) as? UILabel {
-//            placeholderLabel.isHidden = self.text.count > 0
-//        }
-//        inputViewDelegate?.textViewDidChange?(textView)
-//    }
-
-//    public func textViewDidEndEditing(_ textView: UITextView) {
-//        inputViewDelegate?.textViewDidEndEditing?(textView)
-//    }
-
-//    public func textViewDidBeginEditing(_ textView: UITextView) {
-//        inputViewDelegate?.textViewDidBeginEditing?(textView)
-//    }
-
-
-//}
 

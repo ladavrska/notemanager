@@ -31,14 +31,11 @@ open class BaseTableView: UITableView, UITableViewDelegate  {
     
     override open func reloadData() {
         super.reloadData()
-        refreshControl?.endRefreshing()
         
         let number = dataSource?.numberOfSections?(in: self) ?? 0
         showNoDataLabel(show: number == 0)
     }
-    
-    // put to View group
-    
+        
     open func prepareNoDataLabel(){
         noDataLabel.text = "No data"
         noDataLabel.textAlignment = .center
@@ -60,41 +57,14 @@ open class BaseTableView: UITableView, UITableViewDelegate  {
         noDataLabel.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
     }
     
-    
-    //    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //        // recognize select when row actions are displayed on any visible cell
-    //        guard editingCell == nil else {
-    //            editingCell?.setEditing(false, animated: true)
-    //            editingCell = nil
-    //            self.deselectRow(at: indexPath, animated: false)
-    //            return
-    //        }
-    //
-    //        //        if ConnectionService.sharedInstance.internetReachable.value {
-    //        if tapActionsEnabled{
-    //            self.deselectRow(at: indexPath, animated: false)
-    //        }
-    //        //        }
-    //    }
-    
-    //    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    //        //        if ConnectionService.sharedInstance.internetReachable.value{
-    //        //        }
-    //    }
-    
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool{
-        //        if ConnectionService.sharedInstance.internetReachable.value{
         return swipeActionsEnabled
-        //        }
-        
     }
-    
-    //public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath){}
     
     // hide swipe actions on table view scroll
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        editingCell?.setEditing(false, animated: true)
-        editingCell = nil
-    }
+//    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        editingCell?.setEditing(false, animated: true)
+//        editingCell = nil
+//    }
     
 }

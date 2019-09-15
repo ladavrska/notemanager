@@ -1,2 +1,2 @@
 # notemanager
-Simle note manager app
+Simple personal notes manager

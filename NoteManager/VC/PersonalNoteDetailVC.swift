@@ -13,16 +13,25 @@ import Alamofire
 public enum DetailViewMode {
     case view
     case edit
-    case add
+    case create
     
-    // implement get title string
+    public func getTitle() -> String {
+        switch self {
+        case .view:
+            return "Note Detail"
+        case .edit:
+            return "Edit Note"
+        case .create:
+            return "Add Note"
+        }
+    }
 }
 
 open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     
     var input: InputView?
     public var mode: DetailViewMode?
-    var topOffset: CGFloat = 90
+    var topOffset: CGFloat = 150
     
     public required init(mode: DetailViewMode? = nil) {
         self.mode = mode
@@ -66,29 +75,44 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         inputView.hasBorder = false
         inputView.isUserInteractionEnabled = mode == .view ? false : true
         inputView.snp.makeConstraints { (maker) in
-            maker.top.equalToSuperview().offset(topOffset)
-            maker.left.equalToSuperview().offset(20)
+            maker.top.equalToSuperview().offset(self.topOffset)
+            maker.left.equalToSuperview().offset(40)
             maker.bottom.equalToSuperview().offset(-20)
-            maker.right.equalToSuperview().offset(-20)
+            maker.right.equalToSuperview().offset(-40)
         }
-        //inputView.returnKeyType = .done
         input = inputView
     }
     
     // MARK: - NavigationBar
     
     open override func prepareNavigationBarContent() {
-        navigationItem.title = "Note Detail"
         
-        let rightBarButtonItem = UIBarButtonItem(title:"Edit",
-                                                 style:.plain,
-                                                 target:self,
-                                                 action:#selector(editTapped))
+        navigationItem.title = self.mode?.getTitle() ?? ""
         
-        navigationItem.setRightBarButtonItems([rightBarButtonItem], animated: false)
+        var rightBarButtonItems: [UIBarButtonItem] = []
+        var leftBarButtonItems: [UIBarButtonItem] = []
+        if let viewMode = mode {
+            switch viewMode {
+            case .view:
+                let rightBarButtonItem = UIBarButtonItem(title:"Edit", style:.plain, target:self, action:#selector(editTapped))
+                rightBarButtonItems.append(rightBarButtonItem)
+            case .create:
+                let rightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(saveTapped))
+                rightBarButtonItems.append(rightBarButtonItem)
+                let leftBarButtonItem = UIBarButtonItem(title:"Close", style:.plain, target:self, action:#selector(closeTapped))
+                leftBarButtonItems.append(leftBarButtonItem)
+            default: break
+            }
+        }
+        if !rightBarButtonItems.isEmpty {
+            navigationItem.setRightBarButtonItems(rightBarButtonItems, animated: false)
+        }
+        if !leftBarButtonItems.isEmpty {
+            navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: false)
+        }
         
         if let navigationBarHeight = self.navigationController?.navigationBar.frame.height {
-            topOffset = navigationBarHeight
+            topOffset = navigationBarHeight + 60
         }
     }
     
@@ -99,7 +123,6 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         input?.textColor = .black
         mode = .edit
         input?.becomeFirstResponder()
-        // show keyboard
         
         let saveRightBarButtonItem = UIBarButtonItem(title:"Save",
                                                      style:.plain,
@@ -110,34 +133,33 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     }
     
     @objc open func saveTapped() {
-        print("save Tapped")
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc open func closeTapped() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Api request
     
     open override func getApiData() {
-        print("getApiData")
-        super.getApiData()
         
-        guard let noteId = entityId else {
+        guard let url = baseUrl, let noteId = entityId else {
             return
         }
         
-        let url = "\(baseUrl)/notes/\(noteId)"
-        print("detailUrl: \(url)")
-        Alamofire.request(url)
+        super.getApiData()
+        
+        Alamofire.request("\(url)/notes/\(noteId)")
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
-                    print("Error while fetching remote rooms: \(String(describing: response.result.error))")
-                    //completion(nil)
+                    print("Error while fetching data: \(String(describing: response.result.error))")
                     return
                 }
                 
                 guard let noteData = response.result.value as? [String: Any] else {
                     print("Malformed data received")
-                    //completion(nil)
                     return
                 }
                 self.data = noteData
@@ -159,7 +181,7 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
             return
         }
         switch editMode {
-        case .edit, .add:
+        case .edit, .create:
             textView.textColor = .black
         default:
             textView.text = nil

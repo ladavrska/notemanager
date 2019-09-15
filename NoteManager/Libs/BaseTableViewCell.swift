@@ -23,9 +23,6 @@ open class BaseTableViewCell: UITableViewCell {
         return 0.5
     }
     
-    
-    //private var panRecognizer: UIPanGestureRecognizer!
-    
     open var data: Any? {
         didSet {
             if data != nil{
@@ -55,7 +52,6 @@ open class BaseTableViewCell: UITableViewCell {
     open override func prepareForReuse() {
         super.prepareForReuse()
         setEditing(false, animated: false)
-        //        self.styleSelected(selected: false)
     }
     
     fileprivate func addSeparatorView() {
@@ -67,47 +63,7 @@ open class BaseTableViewCell: UITableViewCell {
             maker.width.equalToSuperview()
             maker.height.equalTo(cellSeparatorHeight)
         })
-    }
-    //
-    
-    
-    //    open override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    //        if gestureRecognizer === panRecognizer, !(otherGestureRecognizer.view is UIScrollView || otherGestureRecognizer.view === contentView || otherGestureRecognizer.view is UIWindow) {
-    //            tableView?.scrollViewDidScroll(tableView!)
-    //            return true
-    //        }
-    //        return false
-    //    }
-    
-    // handle transition of editing state called by tableView
-    //    open override func setEditing(_ editing: Bool, animated: Bool) {
-    //        super.setEditing(editing, animated: animated)
-    //        if !editing, animated, max(stackLeadingWidthConstraint!.constant, stackTrailingWidthConstraint!.constant) > 0 {
-    //            hideSwipeActions(force: true)
-    //        }
-    //    }
-    
-    //    open override func setSelected(_ selected: Bool, animated: Bool) {
-    //        guard let dimaTV = self.superview as? DimaTableView else{
-    //            self.styleSelected(selected: selected)
-    //            super.setSelected(selected, animated: animated)
-    //            return
-    //        }
-    //
-    //        if let myIndexPath = tableView?.indexPath(for: self){
-    //            if dimaTV.highlightRowAt == nil || dimaTV.highlightRowAt == myIndexPath{
-    //                self.styleSelected(selected: selected)
-    //            }
-    //        }else{
-    //            self.styleSelected(selected: selected)
-    //        }
-    //
-    //        super.setSelected(selected, animated: animated)
-    //    }
-    
-    //Override this method for custom select style
-    open func styleSelected(selected: Bool){}
-    
+    }    
     
 }
 

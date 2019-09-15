@@ -44,13 +44,10 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     func prepareTableView() {
         
         tableView = BaseTableView()
-        tableView.rowHeight = 80.0
+        tableView.rowHeight = 60.0
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints{ maker in
-            //maker.top.equalTo(topBarView!.snp.bottom)
-            //            maker.top.equalToSuperview().offset(90)    // !!!!
-            //maker.top.equalTo(self.navigationController?.navigationBar.snp.bottom ?? 90)
             maker.top.equalToSuperview().offset(topOffset)
             maker.bottom.leading.trailing.equalToSuperview()
         }
@@ -61,11 +58,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         tableView.dataSource = dataSource
         tableView.swipeActionsEnabled = true
         
-        var cellClass: BaseTableViewCell.Type!
-        cellClass = PersonalNoteTableViewCell.self
-        let classIdentifier = String(describing: cellClass)
-        tableView.register(cellClass, forCellReuseIdentifier: classIdentifier)
-        dataSource.reuseIdentifier = classIdentifier
+        registerCell()
     }
     
     func registerCell() {
@@ -76,23 +69,22 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     open override func getApiData() {
-        print("getApiData")
         super.getApiData()
+        print("BaseUrl: \(baseUrl!)")
+        guard let url = baseUrl else {
+            return
+        }
         
-        let url = "\(baseUrl)/notes"
-        
-        Alamofire.request(url)
+        Alamofire.request("\(url)/notes")
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
-                    print("Error while fetching remote rooms: \(String(describing: response.result.error))")
-                    //completion(nil)
+                    print("Error while fetching data: \(String(describing: response.result.error))")
                     return
                 }
                 
                 guard let notesData = response.result.value as? [[String: Any]] else {
                     print("Malformed data received")
-                    //completion(nil)
                     return
                 }
                 self.data = notesData
@@ -145,15 +137,10 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     @objc open func didTapCreateNote() {
-        print("didTapCreateNote")
-        let createVC = PersonalNoteDetailVC(mode: .add)
-        //navigationController?.pushViewController(detailVC, animated: true)
-        
+        let createVC = PersonalNoteDetailVC(mode: .create)
         let createNC = UINavigationController(rootViewController: createVC)
-        
         present(createNC, animated: true)
-        
-        // preseent modally instead !!!
+
     }
     
     
