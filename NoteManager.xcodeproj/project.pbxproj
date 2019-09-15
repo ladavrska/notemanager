@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,15 @@
 		0779738B232E41CC006810B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0779738A232E41CC006810B6 /* Assets.xcassets */; };
 		0779738E232E41CC006810B6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0779738C232E41CC006810B6 /* LaunchScreen.storyboard */; };
 		07797399232E41CD006810B6 /* NoteManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07797398232E41CD006810B6 /* NoteManagerTests.swift */; };
+		077973A9232E457E006810B6 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973A8232E457E006810B6 /* InputView.swift */; };
+		077973AB232E45A8006810B6 /* PersonalNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973AA232E45A8006810B6 /* PersonalNote.swift */; };
+		077973AD232E45C4006810B6 /* TVDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973AC232E45C4006810B6 /* TVDataSource.swift */; };
+		077973AF232E45E2006810B6 /* PersonalNoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973AE232E45E2006810B6 /* PersonalNoteTableViewCell.swift */; };
+		077973B1232E4603006810B6 /* PersonalNotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B0232E4603006810B6 /* PersonalNotesVC.swift */; };
+		077973B3232E4628006810B6 /* PersonalNoteDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B2232E4628006810B6 /* PersonalNoteDetailVC.swift */; };
+		077973B5232E4648006810B6 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B4232E4648006810B6 /* BaseViewController.swift */; };
+		077973B7232E4665006810B6 /* BaseTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B6232E4665006810B6 /* BaseTableView.swift */; };
+		077973B9232E4683006810B6 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B8232E4683006810B6 /* BaseTableViewCell.swift */; };
 		7935E9E238E23D0B2F7B925F /* Pods_NoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC6155CFDB5C5AF8F0B215B /* Pods_NoteManager.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +46,15 @@
 		07797394232E41CD006810B6 /* NoteManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoteManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07797398232E41CD006810B6 /* NoteManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteManagerTests.swift; sourceTree = "<group>"; };
 		0779739A232E41CD006810B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		077973A8232E457E006810B6 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
+		077973AA232E45A8006810B6 /* PersonalNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNote.swift; sourceTree = "<group>"; };
+		077973AC232E45C4006810B6 /* TVDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVDataSource.swift; sourceTree = "<group>"; };
+		077973AE232E45E2006810B6 /* PersonalNoteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteTableViewCell.swift; sourceTree = "<group>"; };
+		077973B0232E4603006810B6 /* PersonalNotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNotesVC.swift; sourceTree = "<group>"; };
+		077973B2232E4628006810B6 /* PersonalNoteDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteDetailVC.swift; sourceTree = "<group>"; };
+		077973B4232E4648006810B6 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		077973B6232E4665006810B6 /* BaseTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableView.swift; sourceTree = "<group>"; };
+		077973B8232E4683006810B6 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		5F618264D1417DF142C0DEEF /* Pods-NoteManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteManager.debug.xcconfig"; path = "Target Support Files/Pods-NoteManager/Pods-NoteManager.debug.xcconfig"; sourceTree = "<group>"; };
 		8CC6155CFDB5C5AF8F0B215B /* Pods_NoteManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoteManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6ABABEBFFF1B428E6F625E8 /* Pods-NoteManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteManager.release.xcconfig"; path = "Target Support Files/Pods-NoteManager/Pods-NoteManager.release.xcconfig"; sourceTree = "<group>"; };
@@ -84,6 +102,11 @@
 		07797382232E41B9006810B6 /* NoteManager */ = {
 			isa = PBXGroup;
 			children = (
+				077973A7232E455F006810B6 /* View */,
+				077973A6232E4558006810B6 /* Model */,
+				077973A5232E454E006810B6 /* TableView */,
+				077973A4232E4544006810B6 /* VC */,
+				077973A3232E452E006810B6 /* Libs */,
 				07797383232E41B9006810B6 /* AppDelegate.swift */,
 				07797385232E41B9006810B6 /* ViewController.swift */,
 				07797387232E41B9006810B6 /* Main.storyboard */,
@@ -103,13 +126,56 @@
 			path = NoteManagerTests;
 			sourceTree = "<group>";
 		};
+		077973A3232E452E006810B6 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				077973B4232E4648006810B6 /* BaseViewController.swift */,
+				077973B6232E4665006810B6 /* BaseTableView.swift */,
+				077973B8232E4683006810B6 /* BaseTableViewCell.swift */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		077973A4232E4544006810B6 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				077973B0232E4603006810B6 /* PersonalNotesVC.swift */,
+				077973B2232E4628006810B6 /* PersonalNoteDetailVC.swift */,
+			);
+			path = VC;
+			sourceTree = "<group>";
+		};
+		077973A5232E454E006810B6 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				077973AC232E45C4006810B6 /* TVDataSource.swift */,
+				077973AE232E45E2006810B6 /* PersonalNoteTableViewCell.swift */,
+			);
+			path = TableView;
+			sourceTree = "<group>";
+		};
+		077973A6232E4558006810B6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				077973AA232E45A8006810B6 /* PersonalNote.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		077973A7232E455F006810B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				077973A8232E457E006810B6 /* InputView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		183014A400883F334EAF78A7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				5F618264D1417DF142C0DEEF /* Pods-NoteManager.debug.xcconfig */,
 				A6ABABEBFFF1B428E6F625E8 /* Pods-NoteManager.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -266,8 +332,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				077973B1232E4603006810B6 /* PersonalNotesVC.swift in Sources */,
+				077973A9232E457E006810B6 /* InputView.swift in Sources */,
 				07797386232E41B9006810B6 /* ViewController.swift in Sources */,
+				077973B3232E4628006810B6 /* PersonalNoteDetailVC.swift in Sources */,
+				077973B7232E4665006810B6 /* BaseTableView.swift in Sources */,
+				077973B9232E4683006810B6 /* BaseTableViewCell.swift in Sources */,
 				07797384232E41B9006810B6 /* AppDelegate.swift in Sources */,
+				077973B5232E4648006810B6 /* BaseViewController.swift in Sources */,
+				077973AF232E45E2006810B6 /* PersonalNoteTableViewCell.swift in Sources */,
+				077973AD232E45C4006810B6 /* TVDataSource.swift in Sources */,
+				077973AB232E45A8006810B6 /* PersonalNote.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
