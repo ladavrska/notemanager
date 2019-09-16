@@ -8,11 +8,13 @@
 
 import UIKit
 import Foundation
+import Bond
 
 open class TVDataSource: NSObject, UITableViewDataSource{
     
     public var reuseIdentifier: String?
     open var data: [Any] = []
+    public var deletedNoteId = Observable<Int?>(nil)
     
     public override init() {
         super.init()
@@ -41,6 +43,7 @@ open class TVDataSource: NSObject, UITableViewDataSource{
     
     open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
+            deletedNoteId.value = (data[indexPath.row] as! PersonalNote).id
             data.remove(at: indexPath.row)
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)

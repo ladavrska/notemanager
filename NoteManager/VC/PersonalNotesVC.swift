@@ -27,9 +27,9 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     
     override open func prepareView() {
         super.prepareView()
-        print("[PersonalNotesVC] prepareView")
         prepareNavigationBar()
         prepareTableView()
+        setBinding()
     }
     
     override open func updateView(){
@@ -39,6 +39,16 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }
         processResponse(unwrapppedData)
         tableView.reloadData()
+    }
+    
+    func setBinding() {
+        _ = dataSource.deletedNoteId.observeNext { noteId in
+            guard let id = noteId else {
+                return
+            }
+            print("ObserveNext Id of deleted: \(id)")
+            self.deleteNote(id)
+        }
     }
     
     func prepareTableView() {
@@ -92,9 +102,25 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }
     }
     
-    open func processResponse(_ data: [[String:Any]] ) {
+    open func deleteNote(_ id: Int) {
+        guard let url = baseUrl  else { return }
         
-        print("processResponse")
+        Alamofire.request("\(url)/notes/\(id)", method: .delete)
+            .validate()
+            .responseJSON { response in
+                guard response.result.isSuccess else {
+                    print("Error while fetching data: \(String(describing: response.result.error))")
+                    return
+                }
+                guard let successData = response.result.value as? [String: Any] else {
+                    print("Malformed data received")
+                    return
+                }
+                print("Note DELETE success data: \(successData)")
+        }
+    }
+    
+    open func processResponse(_ data: [[String:Any]] ) {
         dataSource.clear()
         let notes = data.compactMap { note in
             return PersonalNote(id: note["id"] as? Int ?? 0, title: note["title"] as? String ?? "N/A")

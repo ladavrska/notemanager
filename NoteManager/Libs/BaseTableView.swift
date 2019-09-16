@@ -37,7 +37,7 @@ open class BaseTableView: UITableView, UITableViewDelegate  {
     }
         
     open func prepareNoDataLabel(){
-        noDataLabel.text = "No data"
+        noDataLabel.text = "No notes"
         noDataLabel.textAlignment = .center
         noDataLabel.font = UIFont.systemFont(ofSize: 20, weight: .medium)
         noDataLabel.textColor = UIColor.darkGray
