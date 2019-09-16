@@ -156,13 +156,13 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     open func goToDetail(id: Int) {
-        let detailVC = PersonalNoteDetailVC(mode: .view)
+        let detailVC = PersonalNoteEditVC(mode: .view)
         detailVC.entityId = id
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
     @objc open func didTapCreateNote() {
-        let createVC = PersonalNoteDetailVC(mode: .create)
+        let createVC = PersonalNoteCreateVC()
         let createNC = UINavigationController(rootViewController: createVC)
         present(createNC, animated: true)
 
