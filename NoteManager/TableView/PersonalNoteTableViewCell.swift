@@ -20,7 +20,6 @@ open class PersonalNoteTableViewCell: BaseTableViewCell {
     open override func prepareView() {
         separatorColor = .lightGray
         prepareTitleLabel()
-        //styleCellToUnselected()
     }
     
     open func prepareTitleLabel() {
@@ -38,19 +37,5 @@ open class PersonalNoteTableViewCell: BaseTableViewCell {
         titleLabel.text = data.title
         idLabel.text = String(data.id)
     }
-    
-    //MARK: Selected cell
-    
-    
-    //    public func styleCellToUnselected() {
-    //        self.contentView.backgroundColor = UIColor.white
-    //        titleLabel.textColor = UIColor.black50PercentColor()
-    //        idLabel.textColor = UIColor.deepNavyBlueColor()
-    //        salaryTypeLabel.textColor = UIColor.deepNavyBlueColor()
-    //        timeLabel.textColor = UIColor.deepNavyBlueColor()
-    //        timeWorkDoneTitleLabel.textColor = UIColor.black50PercentColor()
-    //        timeWorkDoneValueLabel.textColor = UIColor.deepNavyBlueColor()
-    //    }
-    
 }
 

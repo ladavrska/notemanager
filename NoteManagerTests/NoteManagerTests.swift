@@ -18,17 +18,18 @@ class NoteManagerTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testPersonalNote() {
+        let note = PersonalNote(id: 3, title: "Personal note test title")
+        XCTAssertEqual(note.id, 3)
+        XCTAssertEqual(note.title, "Personal note test title")
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testPrepareIconButton() {
+        let noteVC = BasePersonalNoteVC()
+        let button = noteVC.prepareIconButton(icon: "ico-close", size: 46)
+        XCTAssertEqual(button.tintColor, .black)
+        XCTAssertEqual(button.frame.size.width, 46)
     }
 
 }
