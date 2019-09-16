@@ -42,6 +42,13 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override open func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .create {
+            input?.becomeFirstResponder()
+        }
+    }
+    
     public var data: [String:Any]? {
         didSet {
             guard data != nil else {
@@ -76,9 +83,9 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         inputView.isUserInteractionEnabled = mode == .view ? false : true
         inputView.snp.makeConstraints { (maker) in
             maker.top.equalToSuperview().offset(self.topOffset)
-            maker.left.equalToSuperview().offset(40)
+            maker.left.equalToSuperview().offset(30)
             maker.bottom.equalToSuperview().offset(-20)
-            maker.right.equalToSuperview().offset(-40)
+            maker.right.equalToSuperview().offset(-30)
         }
         input = inputView
     }
@@ -97,7 +104,7 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
                 let rightBarButtonItem = UIBarButtonItem(title:"Edit", style:.plain, target:self, action:#selector(editTapped))
                 rightBarButtonItems.append(rightBarButtonItem)
             case .create:
-                let rightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(saveTapped))
+                let rightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(createTapped))
                 rightBarButtonItems.append(rightBarButtonItem)
                 let leftBarButtonItem = UIBarButtonItem(title:"Close", style:.plain, target:self, action:#selector(closeTapped))
                 leftBarButtonItems.append(leftBarButtonItem)
@@ -137,7 +144,24 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     }
     
     @objc open func closeTapped() {
-        self.dismiss(animated: true, completion: nil)
+        guard let newNoteText = input?.text, !newNoteText.isEmpty else {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        showNewNoteDiscardAlert()
+    }
+    
+    open func showNewNoteDiscardAlert() {
+        let alertController = UIAlertController(title: "Discard note?", message: "Operation cannot be undone!", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc open func createTapped() {
+        postNewNote()
     }
     
     // MARK: - Api request
@@ -167,6 +191,22 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         }
     }
     
+    open func postNewNote() {
+        guard let url = baseUrl else { return }
+        let parameters: [String: String] = ["title": input?.text ?? "N/A" as String]
+        
+        Alamofire.request("\(url)/notes", method: .post, parameters: parameters)
+            .validate()
+            .responseJSON { response in
+                guard response.result.isSuccess else {
+                    print("Error while fetching data: \(String(describing: response.result.error))")
+                    return
+                }
+                self.dismiss(animated: true, completion: nil)
+        }
+        
+    }
+    
     open func processResponse(_ data: [String:Any] ) {
         let note = PersonalNote(id: data["id"] as? Int ?? 0, title: data["title"] as? String ?? "N/A")
         input?.text = note.title
@@ -181,8 +221,13 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
             return
         }
         switch editMode {
-        case .edit, .create:
+        case .edit:
             textView.textColor = .black
+        case .create:
+            textView.textColor = .black
+            if textView.text == input?.placeholderText {
+                textView.text = ""
+            }
         default:
             textView.text = nil
         }
