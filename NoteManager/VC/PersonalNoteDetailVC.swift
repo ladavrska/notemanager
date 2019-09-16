@@ -22,7 +22,7 @@ public enum DetailViewMode {
         case .edit:
             return "Edit Note"
         case .create:
-            return "Add Note"
+            return "New Note"
         }
     }
 }
@@ -106,7 +106,7 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
             case .create:
                 let rightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(createTapped))
                 rightBarButtonItems.append(rightBarButtonItem)
-                let leftBarButtonItem = UIBarButtonItem(title:"Close", style:.plain, target:self, action:#selector(closeTapped))
+                let leftBarButtonItem = UIBarButtonItem(title:"Discard", style:.plain, target:self, action:#selector(closeTapped))
                 leftBarButtonItems.append(leftBarButtonItem)
             default: break
             }
@@ -124,37 +124,48 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     }
     
     @objc open func editTapped() {
-        print("edit Tapped")
-        
         input?.isUserInteractionEnabled = true
         input?.textColor = .black
         mode = .edit
         input?.becomeFirstResponder()
-        
-        let saveRightBarButtonItem = UIBarButtonItem(title:"Save",
-                                                     style:.plain,
-                                                     target:self,
-                                                     action:#selector(saveTapped))
-        
+        navigationItem.title = self.mode?.getTitle() ?? ""
+        let saveRightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(saveTapped))
         navigationItem.setRightBarButtonItems([saveRightBarButtonItem], animated: false)
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        let leftBarButtonItem = UIBarButtonItem(title:"Discard", style:.plain, target:self, action:#selector(closeTapped))
+        navigationItem.setLeftBarButtonItems([leftBarButtonItem], animated: false)
     }
     
     @objc open func saveTapped() {
-        self.navigationController?.popViewController(animated: true)
+        putNote()
     }
     
     @objc open func closeTapped() {
-        guard let newNoteText = input?.text, !newNoteText.isEmpty else {
-            self.dismiss(animated: true, completion: nil)
-            return
+        
+        if mode == .edit {
+            if let enabled = navigationItem.rightBarButtonItem?.isEnabled, !enabled {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                showNoteDiscardAlert()
+            }
+        } else {
+            guard let newNoteText = input?.text, !newNoteText.isEmpty else {
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
+            showNoteDiscardAlert()
         }
-        showNewNoteDiscardAlert()
     }
     
-    open func showNewNoteDiscardAlert() {
-        let alertController = UIAlertController(title: "Discard note?", message: "Operation cannot be undone!", preferredStyle: .alert)
+    open func showNoteDiscardAlert() {
+        let alertController = UIAlertController(title: "Discard changes?", message: "Operation cannot be undone!", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
-            self.dismiss(animated: true, completion: nil)
+            if self.mode == .edit {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         self.present(alertController, animated: true, completion: nil)
@@ -167,11 +178,9 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     // MARK: - Api request
     
     open override func getApiData() {
-        
         guard let url = baseUrl, let noteId = entityId else {
             return
         }
-        
         super.getApiData()
         
         Alamofire.request("\(url)/notes/\(noteId)")
@@ -204,6 +213,21 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
                 }
                 self.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    open func putNote() {
+        guard let url = baseUrl, let noteId = entityId else { return }
+        let parameters: [String: AnyObject] = ["id": noteId as AnyObject, "title": (input?.text ?? "N/A") as AnyObject]
+        
+        Alamofire.request("\(url)/notes/\(noteId)", method: .put, parameters: parameters)
+            .validate()
+            .responseJSON { response in
+                guard response.result.isSuccess else {
+                    print("Error while fetching data: \(String(describing: response.result.error))")
+                    return
+                }
+                self.navigationController?.popViewController(animated: true)
+        }
         
     }
     
@@ -214,7 +238,18 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
     
     // MARK: - UITextViewDelegate
     
-    @objc open func textViewDidChange(_ textView: UITextView) {}
+    @objc open func textViewDidChange(_ textView: UITextView) {
+        guard let editMode = self.mode else {
+            return
+        }
+        switch editMode {
+        case .edit:
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        default:
+            break
+        }
+        
+    }
     
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
         guard let editMode = self.mode else {

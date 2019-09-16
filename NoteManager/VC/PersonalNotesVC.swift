@@ -80,10 +80,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     
     open override func getApiData() {
         super.getApiData()
-        print("BaseUrl: \(baseUrl!)")
-        guard let url = baseUrl else {
-            return
-        }
+        guard let url = baseUrl else { return }
         
         Alamofire.request("\(url)/notes")
             .validate()
@@ -125,7 +122,6 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         let notes = data.compactMap { note in
             return PersonalNote(id: note["id"] as? Int ?? 0, title: note["title"] as? String ?? "N/A")
         }
-        print("transformed data for DataSource: \(notes)")
         if !notes.isEmpty {
             dataSource.setData(data: notes)
         }
