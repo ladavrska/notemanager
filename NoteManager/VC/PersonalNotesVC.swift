@@ -130,18 +130,21 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     // MARK: - NavigationBar
     
     open override func prepareNavigationBarContent() {
-        navigationItem.title = "Notes list"
-        
-        let rightBarButtonItem = UIBarButtonItem(title:"Create",
-                                                 style:.plain,
-                                                 target:self,
-                                                 action:#selector(didTapCreateNote))
-        
-        navigationItem.setRightBarButtonItems([rightBarButtonItem], animated: false)
+        navigationItem.title = "My Notes"
+        navigationItem.setRightBarButtonItems([prepareAddButton()], animated: false)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         if let navigationBarHeight = self.navigationController?.navigationBar.frame.height {
             topOffset = navigationBarHeight
         }
+    }
+    
+    func prepareAddButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "ico-plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(didTapCreateNote), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        return UIBarButtonItem(customView: button)
     }
     
     
