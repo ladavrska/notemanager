@@ -101,13 +101,10 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         if let viewMode = mode {
             switch viewMode {
             case .view:
-                let rightBarButtonItem = UIBarButtonItem(title:"Edit", style:.plain, target:self, action:#selector(editTapped))
-                rightBarButtonItems.append(rightBarButtonItem)
+                rightBarButtonItems.append(prepareEditButton())
             case .create:
-                let rightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(createTapped))
-                rightBarButtonItems.append(rightBarButtonItem)
-                let leftBarButtonItem = UIBarButtonItem(title:"Discard", style:.plain, target:self, action:#selector(closeTapped))
-                leftBarButtonItems.append(leftBarButtonItem)
+                rightBarButtonItems.append(prepareCreateButton())
+                leftBarButtonItems.append(prepareDiscardButton())
             default: break
             }
         }
@@ -123,18 +120,51 @@ open class PersonalNoteDetailVC: BaseViewController, UITextViewDelegate  {
         }
     }
     
+    func prepareEditButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "ico-pen")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 65, height: 65)
+        return UIBarButtonItem(customView: button)
+    }
+    
+    func prepareSaveButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "ico-checkmark-2")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 65, height: 65)
+        return UIBarButtonItem(customView: button)
+    }
+    
+    func prepareDiscardButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "ico-close")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 45, height: 45)
+        return UIBarButtonItem(customView: button)
+    }
+    
+    func prepareCreateButton() -> UIBarButtonItem {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "ico-checkmark-2")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
+        button.frame = CGRect(x: 0, y: 0, width: 65, height: 65)
+        return UIBarButtonItem(customView: button)
+    }
+    
     @objc open func editTapped() {
         input?.isUserInteractionEnabled = true
         input?.textColor = .black
         mode = .edit
         input?.becomeFirstResponder()
         navigationItem.title = self.mode?.getTitle() ?? ""
-        let saveRightBarButtonItem = UIBarButtonItem(title:"Save", style:.plain, target:self, action:#selector(saveTapped))
-        navigationItem.setRightBarButtonItems([saveRightBarButtonItem], animated: false)
+        navigationItem.setRightBarButtonItems([prepareSaveButton()], animated: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
-        
-        let leftBarButtonItem = UIBarButtonItem(title:"Discard", style:.plain, target:self, action:#selector(closeTapped))
-        navigationItem.setLeftBarButtonItems([leftBarButtonItem], animated: false)
+        navigationItem.setLeftBarButtonItems([prepareDiscardButton()], animated: false)
     }
     
     @objc open func saveTapped() {
