@@ -54,7 +54,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
 
     func prepareEditButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-pen", size: 65)
+        let button = prepareIconButton(icon: "ico-compose", size: 65)
         button.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }
@@ -66,7 +66,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
 
     func prepareDiscardButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-close", size: 45)
+        let button = prepareIconButton(icon: "ico-close-circle", size: 50)
         button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }

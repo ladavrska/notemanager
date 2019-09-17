@@ -140,7 +140,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     
     func prepareAddButton() -> UIBarButtonItem {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "ico-plus")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(UIImage(named: "ico-add-circle")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .black
         button.addTarget(self, action: #selector(didTapCreateNote), for: .touchUpInside)
         button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)

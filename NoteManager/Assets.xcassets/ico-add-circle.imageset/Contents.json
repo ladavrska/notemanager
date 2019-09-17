@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ico-close-small.png",
+      "filename" : "ico-add-circle.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-close-small@2x.png",
+      "filename" : "ico-add-circle@2x.png",
       "scale" : "2x"
     },
     {

@@ -29,7 +29,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     }
 
     func prepareDiscardButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-close", size: 45)
+        let button = prepareIconButton(icon: "ico-close-circle", size: 50)
         button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }
