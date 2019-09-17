@@ -13,7 +13,7 @@ import Alamofire
 
 open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     
-    public var data: [String:Any]? {
+    public var data: PersonalNote? {
         didSet {
             guard data != nil else {
                 return
@@ -24,10 +24,10 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     
     override open func updateView(){
         super.updateView()
-        guard let unwrapppedData = data else  {
+        guard let noteData = data else  {
             return
         }
-        processResponse(unwrapppedData)
+        input?.text = noteData.title
     }
     
     // MARK: - InputView
@@ -108,33 +108,25 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     // MARK: - Api request
     
     open override func getApiData() {
-        guard let url = baseUrl, let noteId = entityId else {
-            return
-        }
+        guard let url = baseUrl, let noteId = entityId else { return }
         super.getApiData()
-
         Alamofire.request("\(url)/notes/\(noteId)")
             .validate()
-            .responseJSON { response in
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
+            .responseData { response in
+                let decoder = JSONDecoder()
+                let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
+                switch result {
+                case .success:
+                    self.data = result.value
+                case .failure:
+                    print(result.error ?? "Error parsing data")
                 }
-
-                guard let noteData = response.result.value as? [String: Any] else {
-                    print("Malformed data received")
-                    return
-                }
-                self.data = noteData
-                print("data: \(noteData)")
         }
     }
     
     open func putNote() {
         guard let url = baseUrl, let noteId = entityId else { return }
-        let parameters: [String: AnyObject] = ["id": noteId as AnyObject, "title": (input?.text ?? "N/A") as AnyObject]
-
-        Alamofire.request("\(url)/notes/\(noteId)", method: .put, parameters: parameters)
+        Alamofire.request("\(url)/notes/\(noteId)", method: .put, parameters: getParameters(id: noteId))
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
@@ -142,13 +134,14 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
                     return
                 }
                 self.navigationController?.popViewController(animated: true)
-        }
-
+            }
     }
     
-    open func processResponse(_ data: [String:Any] ) {
-        let note = PersonalNote(id: data["id"] as? Int ?? 0, title: data["title"] as? String ?? "N/A")
-        input?.text = note.title
+    func getParameters(id: Int) -> [String:AnyObject] {
+        return [
+            "id": id as AnyObject,
+            "title": (input?.text ?? "N/A") as AnyObject
+        ]
     }
     
     // MARK: - UITextViewDelegate
@@ -168,7 +161,4 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
             textView.text = nil
         }
     }
-    
 }
-
-

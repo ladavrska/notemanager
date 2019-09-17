@@ -67,8 +67,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
     open func postNewNote() {
         guard let url = baseUrl else { return }
-        let parameters: [String: String] = ["title": input?.text ?? "N/A" as String]
-
+        let parameters = ["title": input?.text ?? "N/A" as String]
         Alamofire.request("\(url)/notes", method: .post, parameters: parameters)
             .validate()
             .responseJSON { response in

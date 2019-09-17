@@ -8,8 +8,7 @@
 
 import Foundation
 
-struct PersonalNote {
-    
+public struct PersonalNote: Codable {
     let id: Int
     let title: String
 }

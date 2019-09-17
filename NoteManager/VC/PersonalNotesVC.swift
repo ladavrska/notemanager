@@ -15,7 +15,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
     
-    public var data: [[String:Any]]? {
+    public var data: [PersonalNote]? {
         didSet {
             guard data != nil else {
                 return
@@ -33,10 +33,10 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
     
     override open func updateView(){
         super.updateView()
-        guard let unwrapppedData = data else  {
+        guard let noteData = data else  {
             return
         }
-        processResponse(unwrapppedData)
+        processResponse(noteData)
         tableView.reloadData()
     }
     
@@ -83,19 +83,16 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
         
         Alamofire.request("\(url)/notes")
             .validate()
-            .responseJSON { response in
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
+            .responseData { response in
+                let decoder = JSONDecoder()
+                let result: Result<[PersonalNote]> = decoder.decodeResponse(from: response)
+                switch result {
+                case .success:
+                    self.data = result.value
+                case .failure:
+                    print(result.error ?? "Error parsing data")
                 }
-                
-                guard let notesData = response.result.value as? [[String: Any]] else {
-                    print("Malformed data received")
-                    return
-                }
-                self.data = notesData
-                print("data: \(notesData)")
-        }
+            }
     }
     
     open func deleteNote(_ id: Int) {
@@ -113,16 +110,13 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
                     return
                 }
                 print("Note DELETE success data: \(successData)")
-        }
+            }
     }
     
-    open func processResponse(_ data: [[String:Any]] ) {
+    open func processResponse(_ data: [PersonalNote] ) {
         dataSource.clear()
-        let notes = data.compactMap { note in
-            return PersonalNote(id: note["id"] as? Int ?? 0, title: note["title"] as? String ?? "N/A")
-        }
-        if !notes.isEmpty {
-            dataSource.setData(data: notes)
+        if !data.isEmpty {
+            dataSource.setData(data: data)
         }
     }
     
