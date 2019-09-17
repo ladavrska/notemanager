@@ -10,8 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
-    
+open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareButton {
     public var tableView = BaseTableView()
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
@@ -139,11 +138,8 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     func prepareAddButton() -> UIBarButtonItem {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "ico-add-circle")?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = .black
+        let button = prepareIconButton(icon: "ico-add-circle", size: 60, color: .black)
         button.addTarget(self, action: #selector(didTapCreateNote), for: .touchUpInside)
-        button.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         return UIBarButtonItem(customView: button)
     }
     

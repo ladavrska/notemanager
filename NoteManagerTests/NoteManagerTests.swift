@@ -26,8 +26,8 @@ class NoteManagerTests: XCTestCase {
     }
     
     func testPrepareIconButton() {
-        let noteVC = BasePersonalNoteVC()
-        let button = noteVC.prepareIconButton(icon: "ico-close", size: 46)
+        let noteVC = PersonalNoteCreateVC()
+        let button = noteVC.prepareIconButton(icon: "ico-close-circle", size: 46)
         XCTAssertEqual(button.tintColor, .black)
         XCTAssertEqual(button.frame.size.width, 46)
     }

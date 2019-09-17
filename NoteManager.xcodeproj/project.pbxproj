@@ -24,6 +24,7 @@
 		077973B7232E4665006810B6 /* BaseTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B6232E4665006810B6 /* BaseTableView.swift */; };
 		077973B9232E4683006810B6 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973B8232E4683006810B6 /* BaseTableViewCell.swift */; };
 		077973BC232E4EAE006810B6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077973BB232E4EAE006810B6 /* UIColorExtension.swift */; };
+		07C2C7B02330A01E009FCC8E /* CanPrepareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C2C7AF2330A01E009FCC8E /* CanPrepareButton.swift */; };
 		7935E9E238E23D0B2F7B925F /* Pods_NoteManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC6155CFDB5C5AF8F0B215B /* Pods_NoteManager.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		077973B6232E4665006810B6 /* BaseTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableView.swift; sourceTree = "<group>"; };
 		077973B8232E4683006810B6 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		077973BB232E4EAE006810B6 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		07C2C7AF2330A01E009FCC8E /* CanPrepareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanPrepareButton.swift; sourceTree = "<group>"; };
 		5F618264D1417DF142C0DEEF /* Pods-NoteManager.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteManager.debug.xcconfig"; path = "Target Support Files/Pods-NoteManager/Pods-NoteManager.debug.xcconfig"; sourceTree = "<group>"; };
 		8CC6155CFDB5C5AF8F0B215B /* Pods_NoteManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NoteManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6ABABEBFFF1B428E6F625E8 /* Pods-NoteManager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NoteManager.release.xcconfig"; path = "Target Support Files/Pods-NoteManager/Pods-NoteManager.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		077973A3232E452E006810B6 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				07C2C7AE23309FA2009FCC8E /* Protocol */,
 				077973BA232E4E8C006810B6 /* Extension */,
 				077973B4232E4648006810B6 /* BaseViewController.swift */,
 				077973B6232E4665006810B6 /* BaseTableView.swift */,
@@ -182,6 +185,14 @@
 				077973BB232E4EAE006810B6 /* UIColorExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		07C2C7AE23309FA2009FCC8E /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				07C2C7AF2330A01E009FCC8E /* CanPrepareButton.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		183014A400883F334EAF78A7 /* Pods */ = {
@@ -346,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C2C7B02330A01E009FCC8E /* CanPrepareButton.swift in Sources */,
 				077973B1232E4603006810B6 /* PersonalNotesVC.swift in Sources */,
 				0755A825232FAD7E000D924F /* BasePersonalNoteVC.swift in Sources */,
 				077973A9232E457E006810B6 /* InputView.swift in Sources */,

@@ -61,16 +61,6 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
         input = inputView
     }
     
-    // MARK: - NavigationBar
-    
-    func prepareIconButton(icon: String, size: CGFloat, color: UIColor? = .black) -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: icon)?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.tintColor = color
-        button.frame = CGRect(x: 0, y: 0, width: size, height: size)
-        return button
-    }
-    
     // MARK: - UITextViewDelegate
     
     @objc open func textViewDidEndEditing(_ textView: UITextView) {

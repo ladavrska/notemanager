@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNoteCreateVC: BasePersonalNoteVC {
+open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -29,7 +29,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     }
 
     func prepareDiscardButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-close-circle", size: 50)
+        let button = prepareIconButton(icon: "ico-close-circle", size: 60)
         button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }
