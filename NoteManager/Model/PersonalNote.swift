@@ -9,6 +9,11 @@
 import Foundation
 
 public struct PersonalNote: Codable {
-    let id: Int
-    let title: String
+    var id: Int
+    var title: String
+    
+    init(id: Int = 0, title: String = "") {
+        self.id = id
+        self.title = title
+    }
 }

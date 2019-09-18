@@ -13,9 +13,7 @@ import SnapKit
 
 open class PersonalNoteTableViewCell: BaseTableViewCell {
     
-    
     internal let titleLabel = UILabel()
-    internal let idLabel = UILabel()
     
     open override func prepareView() {
         separatorColor = .lightGray
@@ -35,7 +33,6 @@ open class PersonalNoteTableViewCell: BaseTableViewCell {
     override open func updateView(){
         guard let data = data as? PersonalNote else { return }
         titleLabel.text = data.title
-        idLabel.text = String(data.id)
     }
 }
 

@@ -61,10 +61,4 @@ open class BaseTableView: UITableView, UITableViewDelegate  {
         return swipeActionsEnabled
     }
     
-    // hide swipe actions on table view scroll
-//    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        editingCell?.setEditing(false, animated: true)
-//        editingCell = nil
-//    }
-    
 }

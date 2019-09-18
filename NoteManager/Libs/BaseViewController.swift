@@ -14,9 +14,6 @@ open class BaseViewController: UIViewController {
     
     open var baseUrl: String? = Bundle.main.infoDictionary!["BaseUrl"] as? String
     open var entityId: Int?
-    open var entityData: Any?
-    public let viewWidth = UIScreen.main.bounds.size.width
-    public let viewHeight = UIScreen.main.bounds.size.height
     open var activityIndicator: UIActivityIndicatorView?
     open var firstTimeAppearing = true
     

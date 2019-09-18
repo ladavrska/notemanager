@@ -13,6 +13,7 @@ import Alamofire
 
 open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     
+    private var originalNote: String!
     public var data: PersonalNote? {
         didSet {
             guard data != nil else {
@@ -24,10 +25,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     
     override open func updateView(){
         super.updateView()
-        guard let noteData = data else  {
-            return
-        }
-        input?.text = noteData.title
+        input?.text = data?.title
     }
     
     // MARK: - InputView
@@ -140,20 +138,25 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     func getParameters(id: Int) -> [String:AnyObject] {
         return [
             "id": id as AnyObject,
-            "title": (input?.text ?? "N/A") as AnyObject
+            "title": (data?.title ?? "N/A") as AnyObject
         ]
     }
     
     // MARK: - UITextViewDelegate
     
     @objc open func textViewDidChange(_ textView: UITextView) {
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        guard let note = textView.text else {
+            return
+        }
+        navigationItem.rightBarButtonItem?.isEnabled = note != originalNote ? true : false
+        data?.title = note
     }
 
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
         guard let editMode = self.mode else {
             return
         }
+        originalNote = data?.title
         switch editMode {
         case .edit:
             textView.textColor = .black

@@ -12,6 +12,7 @@ import Alamofire
 
 open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
+    public var personalNote = PersonalNote()
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         input?.becomeFirstResponder()
@@ -67,7 +68,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
     open func postNewNote() {
         guard let url = baseUrl else { return }
-        let parameters = ["title": input?.text ?? "N/A" as String]
+        let parameters = ["title": personalNote.title as String]
         Alamofire.request("\(url)/notes", method: .post, parameters: parameters)
             .validate()
             .responseJSON { response in
@@ -81,10 +82,15 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
     // MARK: - UITextViewDelegate
     
-        @objc open func textViewDidBeginEditing(_ textView: UITextView) {
-            textView.textColor = .black
-            if textView.text == input?.placeholderText {
-                textView.text = ""
-            }
+    @objc open func textViewDidChange(_ textView: UITextView) {
+        personalNote.title = textView.text
+    }
+    
+    @objc open func textViewDidBeginEditing(_ textView: UITextView) {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        textView.textColor = .black
+        if textView.text == input?.placeholderText {
+            textView.text = ""
         }
+    }
 }
