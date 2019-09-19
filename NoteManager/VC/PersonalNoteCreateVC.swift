@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
+open class PersonalNoteCreateVC: BasePersonalNoteVC{
     
     public var personalNote = PersonalNote()
     override open func viewDidAppear(_ animated: Bool) {
@@ -22,23 +22,11 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC, CanPrepareButton {
     
     open override func prepareNavigationBarContent() {
         navigationItem.title = "New Note"
-        navigationItem.setRightBarButtonItems([prepareCreateButton()], animated: false)
-        navigationItem.setLeftBarButtonItems([prepareDiscardButton()], animated: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(createTapped), imageName: "ico-checkmark")
+        navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(closeTapped), imageName: "ico-close")
         if let navigationBarHeight = self.navigationController?.navigationBar.frame.height {
             topOffset = navigationBarHeight + 60
         }
-    }
-
-    func prepareDiscardButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-close-circle", size: 60)
-        button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }
-
-    func prepareCreateButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-checkmark-2", size: 65)
-        button.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
     }
 
     @objc open func closeTapped() {

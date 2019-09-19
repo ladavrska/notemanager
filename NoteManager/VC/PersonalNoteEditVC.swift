@@ -11,7 +11,7 @@ import SnapKit
 import Alamofire
 
 
-open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
+open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     private var originalNote: String!
     public var data: PersonalNote? {
@@ -42,7 +42,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
         if let viewMode = mode {
             switch viewMode {
             case .view:
-                navigationItem.setRightBarButtonItems([prepareEditButton()], animated: false)
+                navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(editTapped), imageName: "icon-pen")
             default: break
             }
         }
@@ -51,33 +51,15 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
         }
     }
 
-    func prepareEditButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-compose", size: 65)
-        button.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }
-
-    func prepareSaveButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-checkmark-2", size: 65)
-        button.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }
-
-    func prepareDiscardButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-close-circle", size: 60)
-        button.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }
-
     @objc open func editTapped() {
         input?.isUserInteractionEnabled = true
         input?.textColor = .black
         mode = .edit
         input?.becomeFirstResponder()
         navigationItem.title = self.mode?.getTitle() ?? ""
-        navigationItem.setRightBarButtonItems([prepareSaveButton()], animated: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(saveTapped), imageName: "ico-checkmark")
         navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.setLeftBarButtonItems([prepareDiscardButton()], animated: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(closeTapped), imageName: "ico-close")
     }
 
     @objc open func saveTapped() {
@@ -123,8 +105,8 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
     }
     
     open func putNote() {
-        guard let url = baseUrl, let noteId = entityId else { return }
-        Alamofire.request("\(url)/notes/\(noteId)", method: .put, parameters: getParameters(id: noteId))
+        guard let url = baseUrl, let id = data?.id else { return }
+        Alamofire.request("\(url)/notes/\(id)", method: .put, parameters: getParameters())
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
@@ -135,11 +117,15 @@ open class PersonalNoteEditVC: BasePersonalNoteVC, CanPrepareButton  {
             }
     }
     
-    func getParameters(id: Int) -> [String:AnyObject] {
-        return [
-            "id": id as AnyObject,
-            "title": (data?.title ?? "N/A") as AnyObject
-        ]
+    func getParameters() -> [String:Any] {
+        var dict: [String:Any] = [:]
+        do {
+            let dataAsDictionary = try self.data?.asDictionary()
+            dict = dataAsDictionary ?? [:]
+        } catch {
+             print(error)
+        }
+        return dict
     }
     
     // MARK: - UITextViewDelegate

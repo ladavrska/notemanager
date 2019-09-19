@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareButton {
+open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     public var tableView = BaseTableView()
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
@@ -124,19 +124,12 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
     
     open override func prepareNavigationBarContent() {
         navigationItem.title = "My Notes"
-        navigationItem.setRightBarButtonItems([prepareAddButton()], animated: false)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(didTapCreateNote), imageName: "icon-plus")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         if let navigationBarHeight = self.navigationController?.navigationBar.frame.height {
             topOffset = navigationBarHeight
         }
     }
-    
-    func prepareAddButton() -> UIBarButtonItem {
-        let button = prepareIconButton(icon: "ico-add-circle", size: 60, color: .black)
-        button.addTarget(self, action: #selector(didTapCreateNote), for: .touchUpInside)
-        return UIBarButtonItem(customView: button)
-    }
-    
     
     // MARK: UITableViewDelegate
     
@@ -157,7 +150,5 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate, CanPrepareB
         present(createNC, animated: true)
 
     }
-    
-    
 }
 

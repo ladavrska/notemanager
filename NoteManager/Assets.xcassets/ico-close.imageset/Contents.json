@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ico-checkmark-2.png",
+      "filename" : "ico-close.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-checkmark-2@2x.png",
+      "filename" : "ico-close@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-checkmark-2@3x.png",
+      "filename" : "ico-close@3x.png",
       "scale" : "3x"
     }
   ],

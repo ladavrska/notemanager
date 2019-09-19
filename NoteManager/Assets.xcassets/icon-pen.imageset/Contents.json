@@ -2,16 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ico-add-circle.png",
+      "filename" : "icon-pen.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-add-circle@2x.png",
+      "filename" : "icon-pen@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "icon-pen@3x.png",
       "scale" : "3x"
     }
   ],
