@@ -18,9 +18,6 @@ extension UIBarButtonItem {
         
         let menuBarItem = UIBarButtonItem(customView: button)
         menuBarItem.customView?.translatesAutoresizingMaskIntoConstraints = false
-        menuBarItem.customView?.heightAnchor.constraint(equalToConstant: size).isActive = true
-        menuBarItem.customView?.widthAnchor.constraint(equalToConstant: size).isActive = true
-        
         return menuBarItem
     }
 }

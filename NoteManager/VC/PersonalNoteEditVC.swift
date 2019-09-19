@@ -9,19 +9,18 @@
 import UIKit
 import SnapKit
 import Alamofire
-
+import Bond
 
 open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     private var originalNote: String?
-    public var data: PersonalNote? {
-        didSet {
-            guard let noteData = data else {
-                return
-            }
-            viewModel = PersonalNoteViewModel(note: noteData)
-            updateView()
+    
+    override open func prepareView() {
+        super.prepareView()
+        if let inputMode = mode, let inputView = input {
+            viewModel?.applyMode(inputMode, to: inputView)
         }
+        setBinding()
     }
     
     override open func updateView(){
@@ -30,6 +29,18 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
             return
         }
         viewModel?.updateNote(inputView)
+    }
+    
+    func setBinding() {
+                
+        if let noteInput = input {
+            _ = noteInput.reactive.text.observeNext { text in
+                self.viewModel?.personalNote.title = text ?? ""
+                if let origNote = self.originalNote  {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
+                }
+            }.dispose(in: bag)
+        }
     }
     
     // MARK: - InputView
@@ -101,7 +112,11 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                 let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
                 switch result {
                 case .success:
-                    self.data = result.value
+                    guard let noteData = result.value else {
+                        return
+                    }
+                    self.viewModel = PersonalNoteViewModel(note: noteData)
+                    self.updateView()
                 case .failure:
                     print(result.error ?? "Error parsing data")
                 }
@@ -110,6 +125,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     open func putNote() {
         guard let url = baseUrl, let id = viewModel?.id else { return }
+        print(getParameters())
         Alamofire.request("\(url)/notes/\(id)", method: .put, parameters: getParameters())
             .validate()
             .responseJSON { response in
@@ -133,19 +149,8 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
     
     // MARK: - UITextViewDelegate
-    
-    @objc open func textViewDidChange(_ textView: UITextView) {
-        guard let note = textView.text, let origNote = originalNote else {
-            return
-        }
-        navigationItem.rightBarButtonItem?.isEnabled = note != origNote ? true : false
-        viewModel?.personalNote.title = note
-    }
 
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
         originalNote = viewModel?.title
-        if let inputMode = mode, let inputView = input {
-            viewModel?.applyMode(inputMode, to: inputView)
-        }
     }
 }

@@ -45,7 +45,6 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
             guard let id = noteId else {
                 return
             }
-            print("ObserveNext Id of deleted: \(id)")
             self.deleteNote(id)
         }
     }
