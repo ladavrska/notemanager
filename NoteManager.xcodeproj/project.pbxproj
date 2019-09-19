@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		073C58D92332A36A000E9EEE /* CodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58D82332A36A000E9EEE /* CodableExtension.swift */; };
 		073C58DB23335A6E000E9EEE /* UIBarButtonItemExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58DA23335A6E000E9EEE /* UIBarButtonItemExtension.swift */; };
+		073C58E023339320000E9EEE /* PersonalNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58DF23339320000E9EEE /* PersonalNoteViewModel.swift */; };
 		0755A825232FAD7E000D924F /* BasePersonalNoteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A824232FAD7E000D924F /* BasePersonalNoteVC.swift */; };
 		0755A827232FAF23000D924F /* PersonalNoteEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A826232FAF23000D924F /* PersonalNoteEditVC.swift */; };
 		0755A829232FAF73000D924F /* PersonalNoteCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A828232FAF73000D924F /* PersonalNoteCreateVC.swift */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		073C58D82332A36A000E9EEE /* CodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtension.swift; sourceTree = "<group>"; };
 		073C58DA23335A6E000E9EEE /* UIBarButtonItemExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemExtension.swift; sourceTree = "<group>"; };
+		073C58DF23339320000E9EEE /* PersonalNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteViewModel.swift; sourceTree = "<group>"; };
 		0755A824232FAD7E000D924F /* BasePersonalNoteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePersonalNoteVC.swift; sourceTree = "<group>"; };
 		0755A826232FAF23000D924F /* PersonalNoteEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteEditVC.swift; sourceTree = "<group>"; };
 		0755A828232FAF73000D924F /* PersonalNoteCreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteCreateVC.swift; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		073C58DC23336B90000E9EEE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				073C58DF23339320000E9EEE /* PersonalNoteViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		07797377232E41B8006810B6 = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +122,7 @@
 		07797382232E41B9006810B6 /* NoteManager */ = {
 			isa = PBXGroup;
 			children = (
+				073C58DC23336B90000E9EEE /* ViewModel */,
 				077973A7232E455F006810B6 /* View */,
 				077973A6232E4558006810B6 /* Model */,
 				077973A5232E454E006810B6 /* TableView */,
@@ -370,6 +381,7 @@
 				0755A829232FAF73000D924F /* PersonalNoteCreateVC.swift in Sources */,
 				073C58D92332A36A000E9EEE /* CodableExtension.swift in Sources */,
 				0768CC55233122B6008BCABC /* JSONDecoderExtension.swift in Sources */,
+				073C58E023339320000E9EEE /* PersonalNoteViewModel.swift in Sources */,
 				077973B7232E4665006810B6 /* BaseTableView.swift in Sources */,
 				0755A827232FAF23000D924F /* PersonalNoteEditVC.swift in Sources */,
 				077973B9232E4683006810B6 /* BaseTableViewCell.swift in Sources */,

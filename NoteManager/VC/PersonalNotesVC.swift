@@ -145,7 +145,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     @objc open func didTapCreateNote() {
-        let createVC = PersonalNoteCreateVC()
+        let createVC = PersonalNoteCreateVC(mode: .create)
         let createNC = UINavigationController(rootViewController: createVC)
         present(createNC, animated: true)
 

@@ -32,6 +32,7 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     var input: InputView?
     public var mode: DetailViewMode?
     var topOffset: CGFloat = 110
+    var viewModel: PersonalNoteViewModel?
     
     public convenience init(mode: DetailViewMode? = nil) {
         self.init()
@@ -63,11 +64,6 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     
     // MARK: - UITextViewDelegate
     
-    @objc open func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = input?.placeholderText ?? ""
-            textView.textColor = .darkGray
-        }
-    }
+    @objc open func textViewDidEndEditing(_ textView: UITextView) {}
 }
 

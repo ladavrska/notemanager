@@ -12,7 +12,6 @@ open class InputView: UITextView {
     
     public weak var inputViewDelegate: UITextViewDelegate?
     open var borderWidth = CGFloat(8.0)
-    open var placeholderText = "New note ..."
     public var hasBorder: Bool = false
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -32,13 +31,11 @@ open class InputView: UITextView {
     
     open func configure() {
         self.font = .systemFont(ofSize: 18)
-        self.textColor = .darkGray
         self.textAlignment = .left
         self.backgroundColor = .white
         if hasBorder {
             prepareBorder()
         }
-        self.text = placeholderText
     }
     
     func prepareBorder() {
@@ -48,7 +45,6 @@ open class InputView: UITextView {
         self.textContainerInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         self.layer.masksToBounds = true
     }
-    
 }
 
 extension InputView: UITextViewDelegate {
@@ -60,6 +56,5 @@ extension InputView: UITextViewDelegate {
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
         inputViewDelegate?.textViewDidBeginEditing?(textView)
     }
-    
 }
 

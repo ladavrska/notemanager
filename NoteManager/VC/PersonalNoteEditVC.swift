@@ -13,19 +13,23 @@ import Alamofire
 
 open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
-    private var originalNote: String!
+    private var originalNote: String?
     public var data: PersonalNote? {
         didSet {
-            guard data != nil else {
+            guard let noteData = data else {
                 return
             }
+            viewModel = PersonalNoteViewModel(note: noteData)
             updateView()
         }
     }
     
     override open func updateView(){
         super.updateView()
-        input?.text = data?.title
+        guard let inputView = input else {
+            return
+        }
+        viewModel?.updateNote(inputView)
     }
     
     // MARK: - InputView
@@ -105,7 +109,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
     
     open func putNote() {
-        guard let url = baseUrl, let id = data?.id else { return }
+        guard let url = baseUrl, let id = viewModel?.id else { return }
         Alamofire.request("\(url)/notes/\(id)", method: .put, parameters: getParameters())
             .validate()
             .responseJSON { response in
@@ -120,7 +124,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     func getParameters() -> [String:Any] {
         var dict: [String:Any] = [:]
         do {
-            let dataAsDictionary = try self.data?.asDictionary()
+            let dataAsDictionary = try self.viewModel?.personalNote.asDictionary()
             dict = dataAsDictionary ?? [:]
         } catch {
              print(error)
@@ -131,23 +135,17 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     // MARK: - UITextViewDelegate
     
     @objc open func textViewDidChange(_ textView: UITextView) {
-        guard let note = textView.text else {
+        guard let note = textView.text, let origNote = originalNote else {
             return
         }
-        navigationItem.rightBarButtonItem?.isEnabled = note != originalNote ? true : false
-        data?.title = note
+        navigationItem.rightBarButtonItem?.isEnabled = note != origNote ? true : false
+        viewModel?.personalNote.title = note
     }
 
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
-        guard let editMode = self.mode else {
-            return
-        }
-        originalNote = data?.title
-        switch editMode {
-        case .edit:
-            textView.textColor = .black
-        default:
-            textView.text = nil
+        originalNote = viewModel?.title
+        if let inputMode = mode, let inputView = input {
+            viewModel?.applyMode(inputMode, to: inputView)
         }
     }
 }
