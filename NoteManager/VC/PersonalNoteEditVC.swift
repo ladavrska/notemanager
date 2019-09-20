@@ -32,15 +32,12 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
     
     func setBinding() {
-                
-        if let noteInput = input {
-            _ = noteInput.reactive.text.observeNext { text in
-                self.viewModel?.personalNote.title = text ?? ""
-                if let origNote = self.originalNote  {
-                    self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
-                }
-            }.dispose(in: bag)
-        }
+        _ = input?.reactive.text.observeNext { text in
+            self.viewModel?.personalNote.title = text ?? ""
+            if let origNote = self.originalNote  {
+                self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
+            }
+        }.dispose(in: bag)
     }
     
     // MARK: - InputView
@@ -133,7 +130,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                     print("Error while fetching data: \(String(describing: response.result.error))")
                     return
                 }
-                self.navigationController?.popViewController(animated: true)
+                self.showSucces()
             }
     }
     

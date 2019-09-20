@@ -46,7 +46,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
                 return
             }
             self.deleteNote(id)
-        }
+        }.dispose(in: bag)
     }
     
     func prepareTableView() {

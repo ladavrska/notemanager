@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNoteCreateVC: BasePersonalNoteVC{
+open class PersonalNoteCreateVC: BasePersonalNoteVC {
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -23,6 +23,15 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC{
         if let inputMode = mode, let inputView = input {
             viewModel?.applyMode(inputMode, to: inputView)
         }
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        setBinding()
+    }
+
+    func setBinding() {
+        _ = input?.reactive.text.observeNext { text in
+            self.viewModel?.personalNote.title = text ?? ""
+            self.navigationItem.rightBarButtonItem?.isEnabled = !(text?.isEmpty ?? true)
+        }.dispose(in: bag)
     }
     
     // MARK: - NavigationBar
@@ -71,17 +80,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC{
                     print("Error while fetching data: \(String(describing: response.result.error))")
                     return
                 }
-                self.dismiss(animated: true, completion: nil)
-        }
-    }
-    
-    // MARK: - UITextViewDelegate
-    
-    @objc open func textViewDidChange(_ textView: UITextView) {
-        viewModel?.personalNote.title = textView.text
-    }
-    
-    @objc open func textViewDidBeginEditing(_ textView: UITextView) {
-        navigationItem.rightBarButtonItem?.isEnabled = true
+                self.showSucces()
+            }
     }
 }

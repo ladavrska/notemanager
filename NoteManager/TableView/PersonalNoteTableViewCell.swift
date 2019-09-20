@@ -26,8 +26,9 @@ open class PersonalNoteTableViewCell: BaseTableViewCell {
             maker.centerY.equalToSuperview()
             maker.leading.equalToSuperview().offset(30)
             maker.trailing.equalToSuperview().offset(-30)
-            maker.height.equalTo(21)
+            maker.height.equalTo(45)
         }
+        titleLabel.numberOfLines = 2        
     }
     
     override open func updateView(){
