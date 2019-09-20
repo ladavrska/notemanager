@@ -10,5 +10,7 @@ Install cocoapods with `pod install`.
 
 Open Xcode project with `open NoteManager.xcworkspace`.
 
+If Xcode compiler complains of unsupported version of cocoapod, please select Pods section in Xcode project outline, find the specific pod and set Swift Language Version to correct number (4.2) 
+
 ## Author
 Vladimír Vrška, v_vrska@yahoo.com
