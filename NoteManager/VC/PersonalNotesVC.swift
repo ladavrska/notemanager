@@ -14,58 +14,56 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     public var tableView = BaseTableView()
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
-    
-    public var data: [PersonalNote]? {
-        didSet {
-            guard data != nil else {
-                return
-            }
-            updateView()
-        }
-    }
+    var viewModel = PersonalNotesViewModel()
     
     override open func prepareView() {
         super.prepareView()
         prepareNavigationBar()
         prepareTableView()
-        setBinding()
+        bindViewModel()
     }
     
-    override open func updateView(){
-        super.updateView()
-        guard let noteData = data else  {
-            return
-        }
-        processResponse(noteData)
-        tableView.reloadData()
-    }
+    // MARK: - bindViewModel
     
-    func setBinding() {
+    func bindViewModel(){
         _ = dataSource.deletedNoteId.observeNext { noteId in
             guard let id = noteId else {
                 return
             }
             self.deleteNote(id)
         }.dispose(in: bag)
+        
+        _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
+            guard let self = self else {return}
+            if isLoading{
+                self.prepareActivityIndicator()
+            }else{
+                self.activityIndicator?.removeFromSuperview()
+            }
+        }.dispose(in: bag)
+        
+        _ = viewModel.personalNoteData.observeNext{ [weak self] notes in
+            guard let self = self else {return}
+            if let personalNotes = notes {
+                self.processResponse(personalNotes)
+                self.tableView.reloadData()
+            }
+        }.dispose(in: bag)
     }
     
     func prepareTableView() {
-        
         tableView = BaseTableView()
         tableView.rowHeight = 60.0
         view.addSubview(tableView)
-        
         tableView.snp.makeConstraints{ maker in
             maker.top.equalToSuperview().offset(topOffset)
             maker.bottom.leading.trailing.equalToSuperview()
         }
-        
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.swipeActionsEnabled = true
-        
         registerCell()
     }
     
@@ -77,21 +75,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     open override func getApiData() {
-        super.getApiData()
-        guard let url = baseUrl else { return }
-        
-        Alamofire.request("\(url)/notes")
-            .validate()
-            .responseData { response in
-                let decoder = JSONDecoder()
-                let result: Result<[PersonalNote]> = decoder.decodeResponse(from: response)
-                switch result {
-                case .success:
-                    self.data = result.value
-                case .failure:
-                    print(result.error ?? "Error parsing data")
-                }
-            }
+        viewModel.getApiData()
     }
     
     open func deleteNote(_ id: Int) {
@@ -147,7 +131,5 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         let createVC = PersonalNoteCreateVC(mode: .create)
         let createNC = UINavigationController(rootViewController: createVC)
         present(createNC, animated: true)
-
     }
 }
-
