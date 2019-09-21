@@ -21,15 +21,16 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         super.prepareView()
         viewModel = PersonalNoteViewModel(note: PersonalNote())
         if let inputMode = mode, let inputView = input {
-            viewModel?.applyMode(inputMode, to: inputView)
+            viewModel.applyMode(inputMode, to: inputView)
         }
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         setBinding()
     }
 
     func setBinding() {
-        _ = input?.reactive.text.observeNext { text in
-            self.viewModel?.personalNote.title = text ?? ""
+        _ = input?.reactive.text.observeNext { [weak self] text in
+            guard let self = self else {return}
+            self.viewModel.personalNote.value.title = text ?? ""
             self.navigationItem.rightBarButtonItem?.isEnabled = !(text?.isEmpty ?? true)
         }.dispose(in: bag)
     }
@@ -72,7 +73,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     
     open func postNewNote() {
         guard let url = baseUrl else { return }
-        let parameters = ["title": viewModel?.personalNote.title ?? ""]
+        let parameters = ["title": viewModel.title]
         Alamofire.request("\(url)/notes", method: .post, parameters: parameters)
             .validate()
             .responseJSON { response in

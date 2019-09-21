@@ -18,24 +18,24 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     override open func prepareView() {
         super.prepareView()
         if let inputMode = mode, let inputView = input {
-            viewModel?.applyMode(inputMode, to: inputView)
+            viewModel.applyMode(inputMode, to: inputView)
         }
-        setBinding()
+        bindViewModel()
     }
     
-    override open func updateView(){
-        super.updateView()
-        guard let inputView = input else {
-            return
-        }
-        viewModel?.updateNote(inputView)
-    }
-    
-    func setBinding() {
-        _ = input?.reactive.text.observeNext { text in
-            self.viewModel?.personalNote.title = text ?? ""
+    func bindViewModel() {
+        _ = input?.reactive.text.observeNext { [weak self] text in
+            guard let self = self else { return }
+            self.viewModel.personalNote.value.title = text ?? ""
             if let origNote = self.originalNote  {
                 self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
+            }
+        }.dispose(in: bag)
+        
+        _ = viewModel.personalNote.observeNext{ [weak self] note in
+            guard let self = self else { return }
+            if let inputView = self.input {
+                self.viewModel.updateNote(inputView)
             }
         }.dispose(in: bag)
     }
@@ -105,6 +105,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         Alamofire.request("\(url)/notes/\(noteId)")
             .validate()
             .responseData { response in
+                self.activityIndicator?.removeFromSuperview()
                 let decoder = JSONDecoder()
                 let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
                 switch result {
@@ -112,8 +113,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                     guard let noteData = result.value else {
                         return
                     }
-                    self.viewModel = PersonalNoteViewModel(note: noteData)
-                    self.updateView()
+                    self.viewModel.personalNote.value = noteData
                 case .failure:
                     print(result.error ?? "Error parsing data")
                 }
@@ -121,9 +121,9 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
     
     open func putNote() {
-        guard let url = baseUrl, let id = viewModel?.id else { return }
+        guard let url = baseUrl else { return }
         print(getParameters())
-        Alamofire.request("\(url)/notes/\(id)", method: .put, parameters: getParameters())
+        Alamofire.request("\(url)/notes/\(viewModel.id)", method: .put, parameters: getParameters())
             .validate()
             .responseJSON { response in
                 guard response.result.isSuccess else {
@@ -137,8 +137,8 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     func getParameters() -> [String:Any] {
         var dict: [String:Any] = [:]
         do {
-            let dataAsDictionary = try self.viewModel?.personalNote.asDictionary()
-            dict = dataAsDictionary ?? [:]
+            let dataAsDictionary = try self.viewModel.personalNote.value.asDictionary()
+            dict = dataAsDictionary 
         } catch {
              print(error)
         }
@@ -148,6 +148,6 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     // MARK: - UITextViewDelegate
 
     @objc open func textViewDidBeginEditing(_ textView: UITextView) {
-        originalNote = viewModel?.title
+        originalNote = viewModel.title
     }
 }

@@ -32,7 +32,7 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     var input: InputView?
     public var mode: DetailViewMode?
     var topOffset: CGFloat = 110
-    var viewModel: PersonalNoteViewModel?
+    var viewModel = PersonalNoteViewModel(note: PersonalNote())
     let successLabel = ToastLabel()
     
     public convenience init(mode: DetailViewMode? = nil) {

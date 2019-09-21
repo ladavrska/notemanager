@@ -7,21 +7,22 @@
 //
 
 import UIKit
+import Bond
 
 public class PersonalNoteViewModel {
     
-    var personalNote: PersonalNote
+    let personalNote = Observable<PersonalNote>(PersonalNote())
     
     public init(note: PersonalNote) {
-        self.personalNote = note
+        self.personalNote.value = note
     }
     
     var id: Int {
-        return personalNote.id
+        return personalNote.value.id
     }
     
     var title: String {
-        return personalNote.title
+        return personalNote.value.title
     }
     
     public func updateNote(_ view: InputView) {
