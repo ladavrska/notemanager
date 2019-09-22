@@ -15,6 +15,7 @@ open class BaseViewController: UIViewController {
     open var baseUrl: String? = Bundle.main.infoDictionary!["BaseUrl"] as? String
     open var entityId: Int?
     open var activityIndicator: UIActivityIndicatorView?
+    open var indicatorIsActive = false
     open var firstTimeAppearing = true
     
     override open func viewDidLoad() {
@@ -70,6 +71,7 @@ open class BaseViewController: UIViewController {
     open func prepareNavigationBarContent() {}
     
     //MARK: Activity indicator
+    
     open func prepareActivityIndicator() {
         
         if activityIndicator == nil {
@@ -80,6 +82,24 @@ open class BaseViewController: UIViewController {
             }
             activityInd.layer.zPosition = 100
             activityIndicator = activityInd
+        }
+    }
+        
+    open func showActivityIndicator() {
+        if !indicatorIsActive, let activityInd = activityIndicator {
+            view.addSubview(activityInd)
+            activityInd.snp.makeConstraints{ maker in
+                maker.edges.equalToSuperview()
+            }
+            activityInd.startAnimating()
+            indicatorIsActive = true
+        }
+    }
+    
+    open func hideActivityIndicator() {
+        if indicatorIsActive {
+            activityIndicator?.removeFromSuperview()
+            indicatorIsActive = false
         }
     }
 }

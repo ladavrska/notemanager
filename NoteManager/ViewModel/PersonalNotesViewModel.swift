@@ -25,6 +25,7 @@ public class PersonalNotesViewModel: ApiDataViewModel {
     override open func getApiData() {
         isLoading.value = true
         Alamofire.request(requestUrl).responseData { response in
+            self.isLoading.value = false
             let decoder = JSONDecoder()
             let result: Result<[PersonalNote]> = decoder.decodeResponse(from: response)
             switch result {

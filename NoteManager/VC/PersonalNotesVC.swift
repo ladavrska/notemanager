@@ -20,14 +20,12 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         super.prepareView()
         prepareNavigationBar()
         prepareTableView()
-        bindViewModel()
+        bind()
     }
     
-    // MARK: - bindViewModel
-    
-    func bindViewModel(){
-        _ = dataSource.deletedNoteId.observeNext { noteId in
-            guard let id = noteId else {
+    func bind(){
+        _ = dataSource.deletedNoteId.observeNext { [weak self] noteId in
+            guard let self = self, let id = noteId else {
                 return
             }
             self.deleteNote(id)
@@ -36,9 +34,9 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
             guard let self = self else {return}
             if isLoading{
-                self.prepareActivityIndicator()
+                self.showActivityIndicator()
             }else{
-                self.activityIndicator?.removeFromSuperview()
+                self.hideActivityIndicator()
             }
         }.dispose(in: bag)
         
