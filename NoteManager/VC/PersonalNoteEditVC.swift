@@ -32,6 +32,15 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
             }
         }.dispose(in: bag)
         
+        _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
+            guard let self = self else {return}
+            if isLoading{
+                self.showActivityIndicator()
+            }else{
+                self.hideActivityIndicator()
+            }
+        }.dispose(in: bag)
+        
         _ = viewModel.personalNote.observeNext{ [weak self] note in
             guard let self = self else { return }
             if let inputView = self.input {
@@ -100,24 +109,8 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     // MARK: - Api request
     
     open override func getApiData() {
-        guard let url = baseUrl, let noteId = entityId else { return }
-        super.getApiData()
-        Alamofire.request("\(url)/notes/\(noteId)")
-            .validate()
-            .responseData { response in
-                self.activityIndicator?.removeFromSuperview()
-                let decoder = JSONDecoder()
-                let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
-                switch result {
-                case .success:
-                    guard let noteData = result.value else {
-                        return
-                    }
-                    self.viewModel.personalNote.value = noteData
-                case .failure:
-                    print(result.error ?? "Error parsing data")
-                }
-        }
+        guard let noteId = entityId else { return }
+        viewModel.getApiData(id: noteId)
     }
     
     open func putNote() {

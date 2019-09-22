@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import Alamofire
 import Bond
 
-public class PersonalNoteViewModel {
+public class PersonalNoteViewModel: ApiDataViewModel {
     
     let personalNote = Observable<PersonalNote>(PersonalNote())
     
@@ -35,6 +36,22 @@ public class PersonalNoteViewModel {
             view.textColor = .darkGray
         case .edit, .create:
             view.textColor = .black
+        }
+    }
+    
+    open func getApiData(id: Int) {
+        let url = "\(requestUrl)/notes/\(id)"
+        isLoading.value = true
+        Alamofire.request(url).responseData { response in
+            self.isLoading.value = false
+            let decoder = JSONDecoder()
+            let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
+            switch result {
+            case .success:
+                self.personalNote.value = result.value ?? PersonalNote()
+            case .failure:
+                print(result.error ?? "Error parsing data")
+            }
         }
     }
 }
