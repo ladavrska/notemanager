@@ -22,6 +22,14 @@ public class PersonalNotesViewModel: ApiDataViewModel {
         return ""
     }
     
+    open var deleteUrl: String{
+        if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
+            let url = "\(baseUrl)/notes"
+            return url
+        }
+        return ""
+    }
+    
     override open func getApiData() {
         isLoading.value = true
         Alamofire.request(requestUrl).responseData { response in
@@ -34,6 +42,22 @@ public class PersonalNotesViewModel: ApiDataViewModel {
             case .failure:
                 print(result.error ?? "Error parsing data")
             }
+        }
+    }
+    
+    open func deleteNote(_ id: Int) {
+        isLoading.value = true
+        var deleteUrl = ""
+        if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
+            deleteUrl = "\(baseUrl)/notes/\(id)"
+        }
+        Alamofire.request(deleteUrl, method: .delete).responseJSON { response in
+            self.isLoading.value = false
+            guard response.result.isSuccess else {
+                print("Error while deleting note")
+                return
+            }
+            print("Note deleted")
         }
     }
 }

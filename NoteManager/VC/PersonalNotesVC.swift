@@ -77,21 +77,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     }
     
     open func deleteNote(_ id: Int) {
-        guard let url = baseUrl  else { return }
-        
-        Alamofire.request("\(url)/notes/\(id)", method: .delete)
-            .validate()
-            .responseJSON { response in
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
-                }
-                guard let successData = response.result.value as? [String: Any] else {
-                    print("Malformed data received")
-                    return
-                }
-                print("Note DELETE success data: \(successData)")
-            }
+        viewModel.deleteNote(id)
     }
     
     open func processResponse(_ data: [PersonalNote] ) {
