@@ -13,6 +13,7 @@ import Bond
 public class PersonalNotesViewModel: ApiDataViewModel {
     
     public let personalNoteData = Observable<[PersonalNote]?>([])
+    let noteDeleted = Observable<Bool?>(nil)
     
     override open var requestUrl: String{
         if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
@@ -54,10 +55,10 @@ public class PersonalNotesViewModel: ApiDataViewModel {
         Alamofire.request(deleteUrl, method: .delete).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
-                print("Error while deleting note")
+                self.noteDeleted.value = false
                 return
             }
-            print("Note deleted")
+            self.noteDeleted.value = true
         }
     }
 }

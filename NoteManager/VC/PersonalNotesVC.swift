@@ -47,6 +47,16 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
                 self.tableView.reloadData()
             }
         }.dispose(in: bag)
+        
+        _ = viewModel.noteDeleted.observeNext{ noteDeleted in
+            guard let deleted = noteDeleted  else {return}
+            if deleted {
+                print("Note deleted")
+            } else {
+                print("Error while deleting note")
+            }
+            // getApiData()
+        }.dispose(in: bag)
     }
     
     func prepareTableView() {
