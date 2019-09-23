@@ -13,6 +13,7 @@ import Bond
 public class PersonalNoteViewModel: ApiDataViewModel {
     
     let personalNote = Observable<PersonalNote>(PersonalNote())
+    let newNotePosted = Observable<Bool>(false)
     
     public init(note: PersonalNote) {
         self.personalNote.value = note
@@ -28,6 +29,14 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     
     public func updateNote(_ view: InputView) {
         view.text = title
+    }
+    
+    open var postUrl: String{
+        if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
+            let url = "\(baseUrl)/notes"
+            return url
+        }
+        return ""
     }
     
     public func applyMode(_ mode: DetailViewMode, to view: UITextView) {
@@ -52,6 +61,19 @@ public class PersonalNoteViewModel: ApiDataViewModel {
             case .failure:
                 print(result.error ?? "Error parsing data")
             }
+        }
+    }
+    
+    open func postNewNote() {
+        isLoading.value = true
+        let parameters = ["title": self.title]
+        Alamofire.request(postUrl, method: .post, parameters: parameters).responseJSON { response in
+                self.isLoading.value = false
+                guard response.result.isSuccess else {
+                    print("Error while fetching data: \(String(describing: response.result.error))")
+                    return
+                }
+                self.newNotePosted.value = true
         }
     }
 }

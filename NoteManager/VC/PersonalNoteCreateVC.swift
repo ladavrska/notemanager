@@ -33,6 +33,22 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
             self.viewModel.personalNote.value.title = text ?? ""
             self.navigationItem.rightBarButtonItem?.isEnabled = !(text?.isEmpty ?? true)
         }.dispose(in: bag)
+        
+        _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
+            guard let self = self else {return}
+            if isLoading{
+                self.showActivityIndicator()
+            } else {
+                self.hideActivityIndicator()
+            }
+        }.dispose(in: bag)
+        
+        _ = viewModel.newNotePosted.observeNext{ [weak self] notePosted in
+            guard let self = self else { return }
+            if notePosted {
+                self.showSucces()
+            }
+        }.dispose(in: bag)
     }
     
     // MARK: - NavigationBar
@@ -72,16 +88,6 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     open override func getApiData() {}
     
     open func postNewNote() {
-        guard let url = baseUrl else { return }
-        let parameters = ["title": viewModel.title]
-        Alamofire.request("\(url)/notes", method: .post, parameters: parameters)
-            .validate()
-            .responseJSON { response in
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
-                }
-                self.showSucces()
-            }
+        viewModel.postNewNote()
     }
 }
