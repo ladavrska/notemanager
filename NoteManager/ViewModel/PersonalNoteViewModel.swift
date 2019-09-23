@@ -14,6 +14,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     
     let personalNote = Observable<PersonalNote>(PersonalNote())
     let newNotePosted = Observable<Bool>(false)
+    let noteUpdated = Observable<Bool?>(nil)
     
     public init(note: PersonalNote) {
         self.personalNote.value = note
@@ -68,12 +69,42 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         isLoading.value = true
         let parameters = ["title": self.title]
         Alamofire.request(postUrl, method: .post, parameters: parameters).responseJSON { response in
-                self.isLoading.value = false
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
-                }
-                self.newNotePosted.value = true
+            self.isLoading.value = false
+            guard response.result.isSuccess else {
+                print("Error while fetching data: \(String(describing: response.result.error))")
+                return
+            }
+            self.newNotePosted.value = true
         }
+    }
+    
+    open func putNote() {
+        var url = ""
+        if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
+            url = "\(baseUrl)/notes/\(self.id)"
+        }
+        isLoading.value = true
+        print(getParameters())
+        print("put url: \(url)")
+        Alamofire.request(url, method: .put, parameters: getParameters()).responseJSON { response in
+            self.isLoading.value = false
+            guard response.result.isSuccess else {
+                print("Error while updating data: \(String(describing: response.result.error))")
+                self.noteUpdated.value = false
+                return
+            }
+            self.noteUpdated.value = true
+        }
+    }
+    
+    func getParameters() -> [String:Any] {
+        var dict: [String:Any] = [:]
+        do {
+            let dataAsDictionary = try self.personalNote.value.asDictionary()
+            dict = dataAsDictionary
+        } catch {
+            print(error)
+        }
+        return dict
     }
 }

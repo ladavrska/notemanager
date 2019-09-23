@@ -47,6 +47,8 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
             guard let self = self else { return }
             if notePosted {
                 self.showSucces()
+            } else {
+                self.showError()
             }
         }.dispose(in: bag)
     }

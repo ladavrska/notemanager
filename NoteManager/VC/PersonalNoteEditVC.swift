@@ -47,6 +47,15 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                 self.viewModel.updateNote(inputView)
             }
         }.dispose(in: bag)
+        
+        _ = viewModel.noteUpdated.observeNext{ [weak self] noteUpdated in
+            guard let self = self, let updated = noteUpdated else { return }
+            if updated {
+                self.showSucces()
+            } else {
+                self.showError()
+            }
+        }.dispose(in: bag)
     }
     
     // MARK: - InputView
@@ -114,28 +123,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     }
     
     open func putNote() {
-        guard let url = baseUrl else { return }
-        print(getParameters())
-        Alamofire.request("\(url)/notes/\(viewModel.id)", method: .put, parameters: getParameters())
-            .validate()
-            .responseJSON { response in
-                guard response.result.isSuccess else {
-                    print("Error while fetching data: \(String(describing: response.result.error))")
-                    return
-                }
-                self.showSucces()
-            }
-    }
-    
-    func getParameters() -> [String:Any] {
-        var dict: [String:Any] = [:]
-        do {
-            let dataAsDictionary = try self.viewModel.personalNote.value.asDictionary()
-            dict = dataAsDictionary 
-        } catch {
-             print(error)
-        }
-        return dict
+        viewModel.putNote()
     }
     
     // MARK: - UITextViewDelegate
