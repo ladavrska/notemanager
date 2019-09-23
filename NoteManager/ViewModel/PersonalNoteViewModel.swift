@@ -13,7 +13,7 @@ import Bond
 public class PersonalNoteViewModel: ApiDataViewModel {
     
     let personalNote = Observable<PersonalNote>(PersonalNote())
-    let newNotePosted = Observable<Bool>(false)
+    let newNotePosted = Observable<Bool?>(nil)
     let noteUpdated = Observable<Bool?>(nil)
     
     public init(note: PersonalNote) {

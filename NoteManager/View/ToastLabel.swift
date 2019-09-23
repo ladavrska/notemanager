@@ -20,7 +20,6 @@ open class ToastLabel: UILabel {
     }
     
     open func configure() {
-        self.text = "Note saved"
         self.textAlignment = .center
         self.backgroundColor = .yellowGreenLight()
         self.layer.masksToBounds = true

@@ -76,8 +76,9 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
         }
     }
     
-    func showSucces() {
+    func showSucces(text: String) {
         self.input?.resignFirstResponder()
+        self.successLabel.text = text
         UIView.animate(withDuration: 1.3, delay: 0.8, options: [.curveEaseInOut, .allowUserInteraction], animations: {
             self.successLabel.alpha = 1
             self.view.layoutIfNeeded()

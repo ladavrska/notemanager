@@ -44,9 +44,9 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         }.dispose(in: bag)
         
         _ = viewModel.newNotePosted.observeNext{ [weak self] notePosted in
-            guard let self = self else { return }
-            if notePosted {
-                self.showSucces()
+            guard let self = self, let posted = notePosted else { return }
+            if posted {
+                self.showSucces(text: "Note saved")
             } else {
                 self.showError()
             }

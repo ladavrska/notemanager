@@ -51,7 +51,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         _ = viewModel.noteUpdated.observeNext{ [weak self] noteUpdated in
             guard let self = self, let updated = noteUpdated else { return }
             if updated {
-                self.showSucces()
+                self.showSucces(text: "Note updated")
             } else {
                 self.showError()
             }
