@@ -32,8 +32,8 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }.dispose(in: bag)
         
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
-            guard let self = self else {return}
-            if isLoading{
+            guard let self = self, let loading = isLoading else {return}
+            if loading{
                 self.showActivityIndicator()
             }else{
                 self.hideActivityIndicator()
@@ -48,6 +48,14 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
             }
         }.dispose(in: bag)
         
+        _ = viewModel.error.observeNext{ [weak self] value in
+            guard let self = self, let error = value else {return}
+            if let msg = error.message {
+                let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
+                alertLabel.show()
+            }
+        }
+        
         _ = viewModel.noteDeleted.observeNext{ noteDeleted in
             guard let deleted = noteDeleted  else {return}
             if deleted {
@@ -55,7 +63,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
             } else {
                 print("Error while deleting note")
             }
-            // getApiData()
+            // reloadData()
         }.dispose(in: bag)
     }
     

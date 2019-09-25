@@ -41,7 +41,11 @@ public class PersonalNotesViewModel: ApiDataViewModel {
             case .success:
                 self.personalNoteData.value = result.value
             case .failure:
-                print(result.error ?? "Error parsing data")
+                var errorMessage = "Error fetching notes data"
+                if let responseErrorData = response.data, let message = self.getResponseErrorMessage(errorData: responseErrorData) {
+                    errorMessage = message
+                }
+                self.error.value = ApiError(message: errorMessage, object: nil)
             }
         }
     }

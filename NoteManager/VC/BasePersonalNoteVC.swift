@@ -33,7 +33,6 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     public var mode: DetailViewMode?
     var topOffset: CGFloat = 110
     var viewModel = PersonalNoteViewModel(note: PersonalNote())
-    let successLabel = ToastLabel()
     
     public convenience init(mode: DetailViewMode? = nil) {
         self.init()
@@ -45,7 +44,6 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
         self.view.backgroundColor = .white
         prepareNavigationBar()
         prepareInput()
-        prepareSuccessLabel()
     }
     
     // MARK: - InputView
@@ -62,43 +60,6 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
             maker.right.equalToSuperview().offset(-30)
         }
         input = inputView
-    }
-    
-    // MARK: - successLabel
-    
-    open func prepareSuccessLabel() {
-        self.view.addSubview(successLabel)
-        successLabel.snp.makeConstraints { (maker) in
-            maker.bottom.equalToSuperview().offset(-100)
-            maker.width.equalTo(150)
-            maker.height.equalTo(40)
-            maker.centerX.equalToSuperview()
-        }
-    }
-    
-    func showSucces(text: String) {
-        self.input?.resignFirstResponder()
-        self.successLabel.text = text
-        UIView.animate(withDuration: 1.3, delay: 0.8, options: [.curveEaseInOut, .allowUserInteraction], animations: {
-            self.successLabel.alpha = 1
-            self.view.layoutIfNeeded()
-            
-        }, completion: { finished in
-            if self.mode == .create {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                self.navigationController?.popViewController(animated: true)
-            }
-        })
-    }
-    
-    func showError() {
-        // TODO: implement
-        if self.mode == .create {
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            self.navigationController?.popViewController(animated: true)
-        }
     }
 }
 

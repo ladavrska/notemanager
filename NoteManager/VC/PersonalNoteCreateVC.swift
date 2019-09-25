@@ -35,8 +35,8 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         }.dispose(in: bag)
         
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
-            guard let self = self else {return}
-            if isLoading{
+            guard let self = self, let loading = isLoading else {return}
+            if loading{
                 self.showActivityIndicator()
             } else {
                 self.hideActivityIndicator()
@@ -46,11 +46,26 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         _ = viewModel.newNotePosted.observeNext{ [weak self] notePosted in
             guard let self = self, let posted = notePosted else { return }
             if posted {
-                self.showSucces(text: "Note saved")
-            } else {
-                self.showError()
+                self.input?.resignFirstResponder()
+                let alertLabel = AlertLabel(presenter: self, type: .success, message: "Note saved")
+                alertLabel.onAlertShowCompleted = { () in
+                    self.dismiss(animated: true, completion: nil)
+                }
+                alertLabel.show()
             }
         }.dispose(in: bag)
+        
+        _ = viewModel.error.observeNext{ [weak self] value in
+            guard let self = self, let error = value else {return}
+            if let msg = error.message {
+                self.input?.resignFirstResponder()
+                let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
+                alertLabel.onAlertShowCompleted = { () in
+                    self.dismiss(animated: true, completion: nil)
+                }
+                alertLabel.show()
+            }
+        }
     }
     
     // MARK: - NavigationBar

@@ -18,7 +18,7 @@ public struct ApiError {
 open class ApiDataViewModel {
     public let apiCollection = Observable<ApiCollection>(ApiCollection(data: [:]))
     let error = Observable<ApiError?>(nil)
-    let isLoading = Observable<Bool>(false)
+    let isLoading = Observable<Bool?>(nil)
     
     open var requestUrl: String{
         if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
@@ -39,5 +39,27 @@ open class ApiDataViewModel {
                 self.error.value = ApiError(message: nil, object: response.error)
             }
         }
+    }
+    
+    // MARK: - ResponseError
+    
+    func getResponseErrorMessage(errorData: Data) -> String? {
+        if let stringFromResponseErrorData = String(data: errorData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue)) {
+            if let errorDict = self.convertToDictionary(text: stringFromResponseErrorData), let message = errorDict["message"] as? String {
+                return message
+            }
+        }
+        return nil
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
 }

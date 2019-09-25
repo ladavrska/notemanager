@@ -33,8 +33,8 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         }.dispose(in: bag)
         
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
-            guard let self = self else {return}
-            if isLoading{
+            guard let self = self, let loading = isLoading else {return}
+            if loading{
                 self.showActivityIndicator()
             }else{
                 self.hideActivityIndicator()
@@ -51,11 +51,16 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         _ = viewModel.noteUpdated.observeNext{ [weak self] noteUpdated in
             guard let self = self, let updated = noteUpdated else { return }
             if updated {
-                self.showSucces(text: "Note updated")
-            } else {
-                self.showError()
+                self.input?.resignFirstResponder()
+                let alertLabel = AlertLabel(presenter: self, type: .success, message: "Note updated")
+                alertLabel.onAlertShowCompleted = { () in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                alertLabel.show()
             }
         }.dispose(in: bag)
+        
+        // bind error
     }
     
     // MARK: - InputView

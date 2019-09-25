@@ -10,10 +10,10 @@
 		073C58D92332A36A000E9EEE /* CodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58D82332A36A000E9EEE /* CodableExtension.swift */; };
 		073C58DB23335A6E000E9EEE /* UIBarButtonItemExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58DA23335A6E000E9EEE /* UIBarButtonItemExtension.swift */; };
 		073C58E023339320000E9EEE /* PersonalNoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58DF23339320000E9EEE /* PersonalNoteViewModel.swift */; };
-		073C58E62334BC55000E9EEE /* ToastLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58E52334BC55000E9EEE /* ToastLabel.swift */; };
 		073C58E82335F8FD000E9EEE /* ApiDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58E72335F8FD000E9EEE /* ApiDataViewModel.swift */; };
 		073C58EA2335FAD6000E9EEE /* ApiCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58E92335FAD6000E9EEE /* ApiCollection.swift */; };
 		073C58EE2335FF04000E9EEE /* PersonalNotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58ED2335FF04000E9EEE /* PersonalNotesViewModel.swift */; };
+		073C58F223394B4D000E9EEE /* AlertLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C58F123394B4D000E9EEE /* AlertLabel.swift */; };
 		0755A825232FAD7E000D924F /* BasePersonalNoteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A824232FAD7E000D924F /* BasePersonalNoteVC.swift */; };
 		0755A827232FAF23000D924F /* PersonalNoteEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A826232FAF23000D924F /* PersonalNoteEditVC.swift */; };
 		0755A829232FAF73000D924F /* PersonalNoteCreateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0755A828232FAF73000D924F /* PersonalNoteCreateVC.swift */; };
@@ -49,10 +49,10 @@
 		073C58D82332A36A000E9EEE /* CodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtension.swift; sourceTree = "<group>"; };
 		073C58DA23335A6E000E9EEE /* UIBarButtonItemExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemExtension.swift; sourceTree = "<group>"; };
 		073C58DF23339320000E9EEE /* PersonalNoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteViewModel.swift; sourceTree = "<group>"; };
-		073C58E52334BC55000E9EEE /* ToastLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastLabel.swift; sourceTree = "<group>"; };
 		073C58E72335F8FD000E9EEE /* ApiDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiDataViewModel.swift; sourceTree = "<group>"; };
 		073C58E92335FAD6000E9EEE /* ApiCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCollection.swift; sourceTree = "<group>"; };
 		073C58ED2335FF04000E9EEE /* PersonalNotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNotesViewModel.swift; sourceTree = "<group>"; };
+		073C58F123394B4D000E9EEE /* AlertLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLabel.swift; sourceTree = "<group>"; };
 		0755A824232FAD7E000D924F /* BasePersonalNoteVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePersonalNoteVC.swift; sourceTree = "<group>"; };
 		0755A826232FAF23000D924F /* PersonalNoteEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteEditVC.swift; sourceTree = "<group>"; };
 		0755A828232FAF73000D924F /* PersonalNoteCreateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalNoteCreateVC.swift; sourceTree = "<group>"; };
@@ -201,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				077973A8232E457E006810B6 /* InputView.swift */,
-				073C58E52334BC55000E9EEE /* ToastLabel.swift */,
+				073C58F123394B4D000E9EEE /* AlertLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -400,9 +400,9 @@
 				0755A827232FAF23000D924F /* PersonalNoteEditVC.swift in Sources */,
 				077973B9232E4683006810B6 /* BaseTableViewCell.swift in Sources */,
 				07797384232E41B9006810B6 /* AppDelegate.swift in Sources */,
-				073C58E62334BC55000E9EEE /* ToastLabel.swift in Sources */,
 				077973B5232E4648006810B6 /* BaseViewController.swift in Sources */,
 				077973AF232E45E2006810B6 /* PersonalNoteTableViewCell.swift in Sources */,
+				073C58F223394B4D000E9EEE /* AlertLabel.swift in Sources */,
 				077973AD232E45C4006810B6 /* TVDataSource.swift in Sources */,
 				077973AB232E45A8006810B6 /* PersonalNote.swift in Sources */,
 				073C58EE2335FF04000E9EEE /* PersonalNotesViewModel.swift in Sources */,

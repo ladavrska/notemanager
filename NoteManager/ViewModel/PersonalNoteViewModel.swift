@@ -71,7 +71,8 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         Alamofire.request(postUrl, method: .post, parameters: parameters).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
-                print("Error while fetching data: \(String(describing: response.result.error))")
+                print("Error while post data: \(String(describing: response.result.error))")
+                self.error.value = ApiError(message: "Error while post data", object: nil)
                 return
             }
             self.newNotePosted.value = true
@@ -84,8 +85,6 @@ public class PersonalNoteViewModel: ApiDataViewModel {
             url = "\(baseUrl)/notes/\(self.id)"
         }
         isLoading.value = true
-        print(getParameters())
-        print("put url: \(url)")
         Alamofire.request(url, method: .put, parameters: getParameters()).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
