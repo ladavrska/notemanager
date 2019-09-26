@@ -159,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				073C58E72335F8FD000E9EEE /* ApiDataViewModel.swift */,
-				07C2C7AE23309FA2009FCC8E /* Protocol */,
 				077973BA232E4E8C006810B6 /* Extension */,
 				077973B4232E4648006810B6 /* BaseViewController.swift */,
 				077973B6232E4665006810B6 /* BaseTableView.swift */,
@@ -215,13 +214,6 @@
 				073C58DA23335A6E000E9EEE /* UIBarButtonItemExtension.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		07C2C7AE23309FA2009FCC8E /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 		183014A400883F334EAF78A7 /* Pods */ = {

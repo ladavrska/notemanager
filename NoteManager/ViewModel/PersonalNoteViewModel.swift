@@ -82,12 +82,12 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     }
     
     open func putNote() {
-        var url = ""
-        if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
-            url = "\(baseUrl)/notes/\(self.id)"
+        guard let parameters = getParameters(), let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String else {
+            return
         }
+        let putUrl = "\(baseUrl)/notes/\(self.id)"
         isLoading.value = true
-        Alamofire.request(url, method: .put, parameters: getParameters()).responseJSON { response in
+        Alamofire.request(putUrl, method: .put, parameters: parameters).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
                 print("Error while updating data: \(String(describing: response.result.error))")
@@ -98,14 +98,11 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         }
     }
     
-    func getParameters() -> [String:Any] {
-        var dict: [String:Any] = [:]
-        do {
-            let dataAsDictionary = try self.personalNote.value.asDictionary()
-            dict = dataAsDictionary
-        } catch {
-            print(error)
+    func getParameters() -> [String:Any]? {
+        guard let dataAsDictionary = try? self.personalNote.value.asDictionary() else {
+            self.error.value = ApiError(message: "Error while updating note", object: nil)
+            return nil
         }
-        return dict
+        return dataAsDictionary
     }
 }

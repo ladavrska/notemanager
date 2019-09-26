@@ -78,7 +78,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                     self.input?.resignFirstResponder()
                     let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
                     alertLabel.onAlertShowCompleted = { () in
-                        self.dismiss(animated: true, completion: nil)
+                        self.navigationController?.popViewController(animated: true)
                     }
                     alertLabel.show()
                 }

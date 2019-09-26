@@ -11,7 +11,7 @@ import UIKit
 
 extension UIBarButtonItem {
     
-    static func menuButton(_ target: Any?, action: Selector, imageName: String, size: CGFloat = 60) -> UIBarButtonItem {
+    static func menuButton(_ target: Any?, action: Selector, imageName: String) -> UIBarButtonItem {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: imageName), for: .normal)
         button.addTarget(target, action: action, for: .touchUpInside)
