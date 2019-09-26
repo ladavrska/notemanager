@@ -33,16 +33,20 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
             guard let self = self else { return }
             self.viewModel.personalNote.value.title = text ?? ""
             if let origNote = self.originalNote  {
-                self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
+                DispatchQueue.main.async {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = text != origNote ? true : false
+                }
             }
         }.dispose(in: bag)
         
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
             guard let self = self, let loading = isLoading else {return}
-            if loading{
-                self.showActivityIndicator()
-            }else{
-                self.hideActivityIndicator()
+            DispatchQueue.main.async {
+                if loading{
+                    self.showActivityIndicator()
+                }else{
+                    self.hideActivityIndicator()
+                }
             }
         }.dispose(in: bag)
         
@@ -56,24 +60,28 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         _ = viewModel.noteUpdated.observeNext{ [weak self] noteUpdated in
             guard let self = self, let updated = noteUpdated else { return }
             if updated {
-                self.input?.resignFirstResponder()
-                let alertLabel = AlertLabel(presenter: self, type: .success, message: "Note updated")
-                alertLabel.onAlertShowCompleted = { () in
-                    self.navigationController?.popViewController(animated: true)
+                DispatchQueue.main.async {
+                    self.input?.resignFirstResponder()
+                    let alertLabel = AlertLabel(presenter: self, type: .success, message: "Note updated")
+                    alertLabel.onAlertShowCompleted = { () in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    alertLabel.show()
                 }
-                alertLabel.show()
             }
         }.dispose(in: bag)
         
         _ = viewModel.error.observeNext{ [weak self] value in
             guard let self = self, let error = value else {return}
             if let msg = error.message {
-                self.input?.resignFirstResponder()
-                let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
-                alertLabel.onAlertShowCompleted = { () in
-                    self.dismiss(animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    self.input?.resignFirstResponder()
+                    let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
+                    alertLabel.onAlertShowCompleted = { () in
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    alertLabel.show()
                 }
-                alertLabel.show()
             }
         }
     }
