@@ -74,7 +74,6 @@ open class AlertLabel: UILabel {
             self.alpha = 1
             self.layoutIfNeeded()
         }, completion: { finished in
-            print("finished")
             self.alpha = 0
             self.onAlertShowCompleted?()
         })

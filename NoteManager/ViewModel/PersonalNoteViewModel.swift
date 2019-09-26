@@ -72,7 +72,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
             self.isLoading.value = false
             guard response.result.isSuccess else {
                 print("Error while post data: \(String(describing: response.result.error))")
-                self.error.value = ApiError(message: "Error while post data", object: nil)
+                self.error.value = ApiError(message: "Error while saving note", object: nil)
                 return
             }
             self.newNotePosted.value = true
@@ -89,7 +89,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
             self.isLoading.value = false
             guard response.result.isSuccess else {
                 print("Error while updating data: \(String(describing: response.result.error))")
-                self.noteUpdated.value = false
+                self.error.value = ApiError(message: "Error while updating note", object: nil)
                 return
             }
             self.noteUpdated.value = true

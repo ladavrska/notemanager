@@ -60,6 +60,18 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
             }
         }.dispose(in: bag)
         
+        _ = viewModel.error.observeNext{ [weak self] value in
+            guard let self = self, let error = value else {return}
+            if let msg = error.message {
+                self.input?.resignFirstResponder()
+                let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
+                alertLabel.onAlertShowCompleted = { () in
+                    self.dismiss(animated: true, completion: nil)
+                }
+                alertLabel.show()
+            }
+        }
+        
         // bind error
     }
     
