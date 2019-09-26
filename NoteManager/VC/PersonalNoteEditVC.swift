@@ -15,6 +15,11 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     private var originalNote: String?
     
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.request?.cancel()
+    }
+    
     override open func prepareView() {
         super.prepareView()
         if let inputMode = mode, let inputView = input {
@@ -71,8 +76,6 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
                 alertLabel.show()
             }
         }
-        
-        // bind error
     }
     
     // MARK: - InputView

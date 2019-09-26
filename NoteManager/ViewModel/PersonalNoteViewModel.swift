@@ -15,6 +15,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     let personalNote = Observable<PersonalNote>(PersonalNote())
     let newNotePosted = Observable<Bool?>(nil)
     let noteUpdated = Observable<Bool?>(nil)
+    public var request: DataRequest?
     
     public init(note: PersonalNote) {
         self.personalNote.value = note
@@ -50,9 +51,10 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     }
     
     open func getApiData(id: Int) {
+        request?.cancel()
         let url = "\(requestUrl)/notes/\(id)"
         isLoading.value = true
-        Alamofire.request(url).responseData { response in
+        request = Alamofire.request(url).responseData { response in
             self.isLoading.value = false
             let decoder = JSONDecoder()
             let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
