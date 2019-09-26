@@ -15,6 +15,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     let personalNote = Observable<PersonalNote>(PersonalNote())
     let newNotePosted = Observable<Bool?>(nil)
     let noteUpdated = Observable<Bool?>(nil)
+    public var request: DataRequest?
     
     public init(note: PersonalNote) {
         self.personalNote.value = note
@@ -50,9 +51,10 @@ public class PersonalNoteViewModel: ApiDataViewModel {
     }
     
     open func getApiData(id: Int) {
+        request?.cancel()
         let url = "\(requestUrl)/notes/\(id)"
         isLoading.value = true
-        Alamofire.request(url).responseData { response in
+        request = Alamofire.request(url).responseData { response in
             self.isLoading.value = false
             let decoder = JSONDecoder()
             let result: Result<PersonalNote> = decoder.decodeResponse(from: response)
@@ -71,7 +73,8 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         Alamofire.request(postUrl, method: .post, parameters: parameters).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
-                print("Error while fetching data: \(String(describing: response.result.error))")
+                print("Error while post data: \(String(describing: response.result.error))")
+                self.error.value = ApiError(message: "Error while saving note", object: nil)
                 return
             }
             self.newNotePosted.value = true
@@ -84,13 +87,11 @@ public class PersonalNoteViewModel: ApiDataViewModel {
             url = "\(baseUrl)/notes/\(self.id)"
         }
         isLoading.value = true
-        print(getParameters())
-        print("put url: \(url)")
         Alamofire.request(url, method: .put, parameters: getParameters()).responseJSON { response in
             self.isLoading.value = false
             guard response.result.isSuccess else {
                 print("Error while updating data: \(String(describing: response.result.error))")
-                self.noteUpdated.value = false
+                self.error.value = ApiError(message: "Error while updating note", object: nil)
                 return
             }
             self.noteUpdated.value = true

@@ -15,11 +15,13 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
     var viewModel = PersonalNotesViewModel()
+    private let refreshControl = UIRefreshControl()
     
     override open func prepareView() {
         super.prepareView()
         prepareNavigationBar()
         prepareTableView()
+        refreshControl.addTarget(self, action: #selector(refresData(_:)), for: .valueChanged)
         bind()
     }
     
@@ -32,11 +34,18 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }.dispose(in: bag)
         
         _ = viewModel.isLoading.observeNext{ [weak self] isLoading in
-            guard let self = self else {return}
-            if isLoading{
-                self.showActivityIndicator()
+            guard let self = self, let loading = isLoading else {return}
+            if loading{
+                DispatchQueue.main.async {
+                    if !self.refreshControl.isRefreshing {
+                        self.showActivityIndicator()
+                    }
+                }
             }else{
-                self.hideActivityIndicator()
+                DispatchQueue.main.async {
+                    self.hideActivityIndicator()
+                    self.refreshControl.endRefreshing()
+                }
             }
         }.dispose(in: bag)
         
@@ -48,6 +57,16 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
             }
         }.dispose(in: bag)
         
+        _ = viewModel.error.observeNext{ [weak self] value in
+            guard let self = self, let error = value else {return}
+            if let msg = error.message {
+                DispatchQueue.main.async {
+                    let alertLabel = AlertLabel(presenter: self, type: .error, message: msg)
+                    alertLabel.show()
+                }
+            }
+        }
+        
         _ = viewModel.noteDeleted.observeNext{ noteDeleted in
             guard let deleted = noteDeleted  else {return}
             if deleted {
@@ -55,9 +74,11 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
             } else {
                 print("Error while deleting note")
             }
-            // getApiData()
+            // reloadData()
         }.dispose(in: bag)
     }
+    
+    // MARK: - TableView
     
     func prepareTableView() {
         tableView = BaseTableView()
@@ -72,6 +93,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.swipeActionsEnabled = true
+        tableView.refreshControl = refreshControl
         registerCell()
     }
     
@@ -81,6 +103,8 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         tableView.register(cellClass, forCellReuseIdentifier: classIdentifier)
         dataSource.reuseIdentifier = classIdentifier
     }
+
+    // MARK: - Api request
     
     open override func getApiData() {
         viewModel.getApiData()
@@ -97,6 +121,10 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }
     }
     
+    @objc private func refresData(_ sender: Any) {
+        reloadData()
+    }
+    
     // MARK: - NavigationBar
     
     open override func prepareNavigationBarContent() {
@@ -108,7 +136,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         }
     }
     
-    // MARK: UITableViewDelegate
+    // MARK: - UITableViewDelegate
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let data = dataSource.getData(indexPath) as? PersonalNote else {return}
