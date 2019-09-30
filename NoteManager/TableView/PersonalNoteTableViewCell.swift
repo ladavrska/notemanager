@@ -11,16 +11,16 @@ import UIKit
 import SnapKit
 
 
-open class PersonalNoteTableViewCell: BaseTableViewCell {
+public class PersonalNoteTableViewCell: BaseTableViewCell {
     
-    internal let titleLabel = UILabel()
+    let titleLabel = UILabel()
     
-    open override func prepareView() {
+    override public func prepareView() {
         separatorColor = .lightGray
         prepareTitleLabel()
     }
     
-    open func prepareTitleLabel() {
+    public func prepareTitleLabel() {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { maker in
             maker.centerY.equalToSuperview()
@@ -31,7 +31,7 @@ open class PersonalNoteTableViewCell: BaseTableViewCell {
         titleLabel.numberOfLines = 2        
     }
     
-    override open func updateView(){
+    override public func updateView(){
         guard let data = data as? PersonalNote else { return }
         titleLabel.text = data.title
     }

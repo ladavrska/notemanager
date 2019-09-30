@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNoteCreateVC: BasePersonalNoteVC {
+final class PersonalNoteCreateVC: BasePersonalNoteVC {
     
-    override open func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         input?.becomeFirstResponder()
     }
         
-    override open func prepareView() {
+    override public func prepareView() {
         super.prepareView()
         viewModel = PersonalNoteViewModel(note: PersonalNote())
         if let inputMode = mode, let inputView = input {
@@ -27,7 +27,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         setBinding()
     }
 
-    func setBinding() {
+    private func setBinding() {
         _ = input?.reactive.text.observeNext { [weak self] text in
             guard let self = self else {return}
             self.viewModel.personalNote.value.title = text ?? ""
@@ -78,7 +78,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     
     // MARK: - NavigationBar
     
-    open override func prepareNavigationBarContent() {
+    public override func prepareNavigationBarContent() {
         navigationItem.title = "New Note"
         navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(createTapped), imageName: "ico-checkmark")
         navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(closeTapped), imageName: "ico-close")
@@ -87,7 +87,7 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         }
     }
 
-    @objc open func closeTapped() {
+    @objc public func closeTapped() {
         guard let newNoteText = input?.text, !newNoteText.isEmpty else {
             self.dismiss(animated: true, completion: nil)
             return
@@ -95,11 +95,11 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
         showNoteDiscardAlert()
     }
 
-    @objc open func createTapped() {
+    @objc public func createTapped() {
         postNewNote()
     }
     
-    open func showNoteDiscardAlert() {
+    public func showNoteDiscardAlert() {
         let alertController = UIAlertController(title: "Discard changes?", message: "Operation cannot be undone!", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
                 self.dismiss(animated: true, completion: nil)
@@ -110,9 +110,9 @@ open class PersonalNoteCreateVC: BasePersonalNoteVC {
     
     // MARK: - Api request
     
-    open override func getApiData() {}
+    public override func getApiData() {}
     
-    open func postNewNote() {
+    public func postNewNote() {
         viewModel.postNewNote()
     }
 }

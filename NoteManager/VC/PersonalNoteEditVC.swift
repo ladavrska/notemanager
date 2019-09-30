@@ -11,16 +11,16 @@ import SnapKit
 import Alamofire
 import Bond
 
-open class PersonalNoteEditVC: BasePersonalNoteVC  {
+final class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     private var originalNote: String?
     
-    override open func viewDidDisappear(_ animated: Bool) {
+    override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewModel.request?.cancel()
     }
     
-    override open func prepareView() {
+    override public func prepareView() {
         super.prepareView()
         if let inputMode = mode, let inputView = input {
             viewModel.applyMode(inputMode, to: inputView)
@@ -88,14 +88,14 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     // MARK: - InputView
     
-    open override func prepareInput() {
+    public override func prepareInput() {
         super.prepareInput()
         input?.isUserInteractionEnabled = mode == .view ? false : true
     }
     
     // MARK: - NavigationBar
     
-    open override func prepareNavigationBarContent() {
+    public override func prepareNavigationBarContent() {
         navigationItem.title = self.mode?.getTitle() ?? ""
         if let viewMode = mode {
             switch viewMode {
@@ -109,7 +109,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         }
     }
 
-    @objc open func editTapped() {
+    @objc public func editTapped() {
         input?.isUserInteractionEnabled = true
         input?.textColor = .black
         mode = .edit
@@ -120,11 +120,11 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         navigationItem.leftBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(closeTapped), imageName: "ico-close")
     }
 
-    @objc open func saveTapped() {
+    @objc public func saveTapped() {
         putNote()
     }
 
-    @objc open func closeTapped() {
+    @objc public func closeTapped() {
         if mode == .edit {
             if let enabled = navigationItem.rightBarButtonItem?.isEnabled, !enabled {
                 self.navigationController?.popViewController(animated: true)
@@ -134,7 +134,7 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
         }
     }
 
-    open func showNoteDiscardAlert() {
+    public func showNoteDiscardAlert() {
         let alertController = UIAlertController(title: "Discard changes?", message: "Operation cannot be undone!", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { action in
             self.navigationController?.popViewController(animated: true)
@@ -145,18 +145,18 @@ open class PersonalNoteEditVC: BasePersonalNoteVC  {
     
     // MARK: - Api request
     
-    open override func getApiData() {
+    public override func getApiData() {
         guard let noteId = entityId else { return }
         viewModel.getApiData(id: noteId)
     }
     
-    open func putNote() {
+    public func putNote() {
         viewModel.putNote()
     }
     
     // MARK: - UITextViewDelegate
 
-    @objc open func textViewDidBeginEditing(_ textView: UITextView) {
+    @objc public func textViewDidBeginEditing(_ textView: UITextView) {
         originalNote = viewModel.title
     }
 }

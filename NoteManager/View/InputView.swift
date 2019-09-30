@@ -11,7 +11,7 @@ import UIKit
 open class InputView: UITextView {
     
     public weak var inputViewDelegate: UITextViewDelegate?
-    open var borderWidth = CGFloat(8.0)
+    public var borderWidth = CGFloat(8.0)
     public var hasBorder: Bool = false
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -29,7 +29,7 @@ open class InputView: UITextView {
         super.init(coder: aDecoder)
     }
     
-    open func configure() {
+    public func configure() {
         self.font = .systemFont(ofSize: 18)
         self.textAlignment = .left
         self.backgroundColor = .white
@@ -49,11 +49,11 @@ open class InputView: UITextView {
 
 extension InputView: UITextViewDelegate {
     
-    @objc open func textViewDidChange(_ textView: UITextView) {
+    @objc public func textViewDidChange(_ textView: UITextView) {
         inputViewDelegate?.textViewDidChange?(textView)
     }
     
-    @objc open func textViewDidBeginEditing(_ textView: UITextView) {
+    @objc public func textViewDidBeginEditing(_ textView: UITextView) {
         inputViewDelegate?.textViewDidBeginEditing?(textView)
     }
 }

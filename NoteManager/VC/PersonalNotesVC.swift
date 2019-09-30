@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 import Alamofire
 
-open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
+final class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     public var tableView = BaseTableView()
     public var dataSource = TVDataSource()
     var topOffset: CGFloat = 90
     var viewModel = PersonalNotesViewModel()
     private let refreshControl = UIRefreshControl()
     
-    override open func prepareView() {
+    override public func prepareView() {
         super.prepareView()
         prepareNavigationBar()
         prepareTableView()
@@ -25,7 +25,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         bind()
     }
     
-    func bind(){
+    private func bind(){
         _ = dataSource.deletedNoteId.observeNext { [weak self] noteId in
             guard let self = self, let id = noteId else {
                 return
@@ -106,15 +106,15 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
 
     // MARK: - Api request
     
-    open override func getApiData() {
+    public override func getApiData() {
         viewModel.getApiData()
     }
     
-    open func deleteNote(_ id: Int) {
+    public func deleteNote(_ id: Int) {
         viewModel.deleteNote(id)
     }
     
-    open func processResponse(_ data: [PersonalNote] ) {
+    public func processResponse(_ data: [PersonalNote] ) {
         dataSource.clear()
         if !data.isEmpty {
             dataSource.setData(data: data)
@@ -127,7 +127,7 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
     
     // MARK: - NavigationBar
     
-    open override func prepareNavigationBarContent() {
+    public override func prepareNavigationBarContent() {
         navigationItem.title = "My Notes"
         navigationItem.rightBarButtonItem = UIBarButtonItem.menuButton(self, action: #selector(didTapCreateNote), imageName: "icon-plus")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -143,13 +143,13 @@ open class PersonalNotesVC: BaseViewController, UITableViewDelegate {
         self.goToDetail(id: data.id)
     }
     
-    open func goToDetail(id: Int) {
+    public func goToDetail(id: Int) {
         let detailVC = PersonalNoteEditVC(mode: .view)
         detailVC.entityId = id
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    @objc open func didTapCreateNote() {
+    @objc public func didTapCreateNote() {
         let createVC = PersonalNoteCreateVC(mode: .create)
         let createNC = UINavigationController(rootViewController: createVC)
         present(createNC, animated: true)

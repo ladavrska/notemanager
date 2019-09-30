@@ -8,8 +8,8 @@
 
 import Foundation
 
-open class ApiCollection {
-    open var data: [String: AnyObject]?
+public class ApiCollection {
+    public var data: [String: AnyObject]?
     
     public init(data: Dictionary<String, AnyObject>) {
             self.data = data

@@ -10,25 +10,25 @@ import UIKit
 import Foundation
 import Bond
 
-open class TVDataSource: NSObject, UITableViewDataSource{
+public class TVDataSource: NSObject, UITableViewDataSource{
     
     public var reuseIdentifier: String?
-    open var data: [Any] = []
+    public var data: [Any] = []
     public var deletedNoteId = Observable<Int?>(nil)
     
     public override init() {
         super.init()
     }
     
-    open func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return data.count
     }
     
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let reuseId = reuseIdentifier {
             let cell = tableView.dequeueReusableCell(withIdentifier: reuseId, for: indexPath) as! BaseTableViewCell
             cell.data = getData(indexPath)
@@ -37,11 +37,11 @@ open class TVDataSource: NSObject, UITableViewDataSource{
         return UITableViewCell()
     }
     
-    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             deletedNoteId.value = (data[indexPath.row] as! PersonalNote).id
             data.remove(at: indexPath.row)
@@ -51,19 +51,19 @@ open class TVDataSource: NSObject, UITableViewDataSource{
         }
     }
     
-    open func clear() {
+    public func clear() {
         self.data = []
     }
     
-    open func setData(data: [Any]){
+    public func setData(data: [Any]){
         self.data = data
     }
     
-    open func getData(_ indexPath: IndexPath) -> Any? {
+    public func getData(_ indexPath: IndexPath) -> Any? {
         return data[indexPath.row]
     }
     
-    open func getDataCount() -> Int{
+    public func getDataCount() -> Int{
         return data.count
     }
 }

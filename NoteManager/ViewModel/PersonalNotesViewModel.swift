@@ -23,7 +23,7 @@ public class PersonalNotesViewModel: ApiDataViewModel {
         return ""
     }
     
-    open var deleteUrl: String{
+    public var deleteUrl: String{
         if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
             let url = "\(baseUrl)/notes"
             return url
@@ -31,7 +31,7 @@ public class PersonalNotesViewModel: ApiDataViewModel {
         return ""
     }
     
-    override open func getApiData() {
+    override public func getApiData() {
         isLoading.value = true
         Alamofire.request(requestUrl).responseData { response in
             self.isLoading.value = false
@@ -50,7 +50,7 @@ public class PersonalNotesViewModel: ApiDataViewModel {
         }
     }
     
-    open func deleteNote(_ id: Int) {
+    public func deleteNote(_ id: Int) {
         isLoading.value = true
         var deleteUrl = ""
         if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {

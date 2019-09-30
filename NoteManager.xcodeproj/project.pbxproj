@@ -158,6 +158,7 @@
 		077973A3232E452E006810B6 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				073C58E92335FAD6000E9EEE /* ApiCollection.swift */,
 				073C58E72335F8FD000E9EEE /* ApiDataViewModel.swift */,
 				077973BA232E4E8C006810B6 /* Extension */,
 				077973B4232E4648006810B6 /* BaseViewController.swift */,
@@ -191,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				077973AA232E45A8006810B6 /* PersonalNote.swift */,
-				073C58E92335FAD6000E9EEE /* ApiCollection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

@@ -27,10 +27,10 @@ public enum DetailViewMode {
     }
 }
 
-open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
+public class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     
     var input: InputView?
-    public var mode: DetailViewMode?
+    var mode: DetailViewMode?
     var topOffset: CGFloat = 110
     var viewModel = PersonalNoteViewModel(note: PersonalNote())
     
@@ -39,7 +39,7 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
         self.mode = mode
     }
     
-    override open func prepareView() {
+    override public func prepareView() {
         super.prepareView()
         self.view.backgroundColor = .white
         prepareNavigationBar()
@@ -48,7 +48,7 @@ open class BasePersonalNoteVC: BaseViewController, UITextViewDelegate  {
     
     // MARK: - InputView
     
-    open func prepareInput() {
+    func prepareInput() {
         let inputView = InputView(hasBorder: false)
         view.addSubview(inputView)
         inputView.inputViewDelegate = self

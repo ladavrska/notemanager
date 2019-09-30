@@ -22,7 +22,7 @@ public enum AlertType{
     }
 }
 
-open class AlertLabel: UILabel {
+public class AlertLabel: UILabel {
     
     weak var presenterVC: UIViewController?
     var alertType: AlertType?
@@ -49,7 +49,7 @@ open class AlertLabel: UILabel {
         super.init(coder: aDecoder)!
     }
     
-    open func configure() {
+    public func configure() {
         self.textAlignment = .center
         self.backgroundColor = self.alertType?.getAlertTypeColor()
         self.layer.masksToBounds = true
@@ -59,7 +59,7 @@ open class AlertLabel: UILabel {
         self.textColor = .white
     }
     
-    open func prepareAlertLabel() {
+    public func prepareAlertLabel() {
         presenterVC?.view.addSubview(self)
         self.snp.makeConstraints { (maker) in
             maker.bottom.equalToSuperview().offset(-100)

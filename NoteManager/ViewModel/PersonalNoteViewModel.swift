@@ -33,7 +33,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         view.text = title
     }
     
-    open var postUrl: String{
+    public var postUrl: String{
         if let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String {
             let url = "\(baseUrl)/notes"
             return url
@@ -50,7 +50,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         }
     }
     
-    open func getApiData(id: Int) {
+    public func getApiData(id: Int) {
         request?.cancel()
         let url = "\(requestUrl)/notes/\(id)"
         isLoading.value = true
@@ -67,7 +67,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         }
     }
     
-    open func postNewNote() {
+    public func postNewNote() {
         isLoading.value = true
         let parameters = ["title": self.title]
         Alamofire.request(postUrl, method: .post, parameters: parameters).responseJSON { response in
@@ -81,7 +81,7 @@ public class PersonalNoteViewModel: ApiDataViewModel {
         }
     }
     
-    open func putNote() {
+    public func putNote() {
         guard let parameters = getParameters(), let baseUrl = Bundle.main.infoDictionary!["BaseUrl"] as? String else {
             return
         }
